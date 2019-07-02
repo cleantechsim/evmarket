@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using CleanTechSim.MainPage.Models;
+using CleanTechSim.MainPage.Helpers;
 
 namespace mainpage.Controllers
 {
@@ -12,7 +13,11 @@ namespace mainpage.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            IndexModel model = new IndexModel(PreparedDataPoints.VerifyAndCompute(
+                StaticData.EvAdoption.Lines,
+                new DataPointFormat(Encoding.YEAR_MONTH, Encoding.NUMBER)));
+
+            return View(model);
         }
 
         public IActionResult Privacy()

@@ -1,8 +1,87 @@
-﻿@{
+﻿
+@using CleanTechSim.MainPage.Models
+@model IndexModel
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+
+    <canvas id="chart"></canvas>
+
 </div>
+
+<script>
+    @{
+        PreparedDataPoints dataSets = Model.EVAdoption;
+    }
+    var ctx = document.getElementById('chart').getContext('2d');
+
+    var chart = new Chart(ctx, {
+        type : 'line',
+        data : {
+            'labels' : [
+                @for (int i = 0; i < dataSets.Labels.Count(); i++)
+                {
+                    if (i > 0) {
+                        <text>, </text>
+                    }
+                    
+                    <text>'@dataSets.Labels.ElementAt(i)'</text>
+                }
+            ],
+
+            'datasets' : [
+
+            @for (int i = 0; i < dataSets.DataSets.Count(); ++ i)
+            {
+                DataSet dataSet = dataSets.DataSets.ElementAt(i);
+
+                if (i > 0) {
+                    <text>, </text>
+                }
+                <text>{
+
+                    'label' : '@dataSet.Label',
+                    'borderColor' : 'rgb(@dataSet.Color.R, @dataSet.Color.G, @dataSet.Color.B)',
+                    
+                    'fill' : false,
+
+                    'data' : [</text>
+                
+                for (int j = 0; j < dataSet.Values.Count(); ++ j) {
+                    decimal? value = dataSet.Values.ElementAt(j);
+
+                    string valueString = value.HasValue ? value.Value.ToString() : "null";
+
+                    if (j > 0) {
+                        <text>, </text>
+                    }
+                    <text>@value</text>
+                }
+
+                <text>]</text>
+
+                <text>}</text>
+            }
+            /*
+            {
+                label : 'test123',
+                // backgroundColor : 'rgb(100, 100, 100)',
+                // borderColor : 'rgb(100, 100, 100)',
+                data : [ 1, 3.8, 2  ]
+            }
+            */
+            ]
+        },
+
+        options : {
+            'spanGaps' : true
+        }
+
+    });    
+</script>
