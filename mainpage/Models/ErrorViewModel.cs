@@ -1,6 +1,6 @@
 using System;
 
-namespace mainpage.Models
+namespace CleanTechSim.MainPage.Models
 {
     public class ErrorViewModel
     {
