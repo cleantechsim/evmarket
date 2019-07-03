@@ -11,9 +11,12 @@ namespace mainpage.Controllers
 {
     public class HomeController : Controller
     {
+        public const string EV_ADOPTION_ID = "evAdoption";
+
         public IActionResult Index()
         {
             IndexModel model = new IndexModel(PreparedDataPoints.VerifyAndCompute(
+                EV_ADOPTION_ID,
                 StaticData.EvAdoption.Lines,
                 new DataPointFormat(Encoding.YEAR_MONTH, Encoding.NUMBER)));
 

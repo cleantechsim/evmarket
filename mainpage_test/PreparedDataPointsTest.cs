@@ -34,6 +34,7 @@ namespace CleanTechSim.MainPage.Models
             ));
 
             PreparedDataPoints dataPoints = PreparedDataPoints.VerifyAndCompute(
+                "evAdoption",
                 StaticData.EvAdoption.Lines, new DataPointFormat(Encoding.YEAR_MONTH, Encoding.NUMBER)
             );
 

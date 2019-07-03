@@ -7,15 +7,22 @@ namespace CleanTechSim.MainPage.Models
 {
     public class PreparedDataPoints
     {
+        private readonly string graphId;
         private readonly List<string> labels;
         private readonly List<DataSet> dataSets;
 
+        public string GraphId { get { return graphId; } }
         public IEnumerable<string> Labels { get { return labels; } }
 
         public IEnumerable<DataSet> DataSets { get { return dataSets; } }
 
-        private PreparedDataPoints(List<string> labels, List<DataSet> dataSets)
+        private PreparedDataPoints(string graphId, List<string> labels, List<DataSet> dataSets)
         {
+            if (graphId == null)
+            {
+                throw new ArgumentNullException();
+            }
+
             if (labels == null)
             {
                 throw new ArgumentNullException();
@@ -26,6 +33,7 @@ namespace CleanTechSim.MainPage.Models
                 throw new ArgumentNullException();
             }
 
+            this.graphId = graphId;
             this.labels = labels;
             this.dataSets = dataSets;
         }
@@ -106,7 +114,7 @@ namespace CleanTechSim.MainPage.Models
             return labels;
         }
 
-        public static PreparedDataPoints VerifyAndCompute(IEnumerable<Line> graphLines, DataPointFormat format)
+        public static PreparedDataPoints VerifyAndCompute(string graphId, IEnumerable<Line> graphLines, DataPointFormat format)
         {
 
             // Find the y-values and the labels for those
@@ -173,7 +181,7 @@ namespace CleanTechSim.MainPage.Models
             }
 
 
-            return new PreparedDataPoints(labels, dataSets);
+            return new PreparedDataPoints(graphId, labels, dataSets);
 
         }
 
