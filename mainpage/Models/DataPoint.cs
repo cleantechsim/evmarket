@@ -36,6 +36,12 @@ namespace CleanTechSim.MainPage.Models
         }
 
         public DataPoint(decimal x, decimal y, params DataSource[] sources)
+            : this(x, y, (IEnumerable<DataSource>)sources)
+        {
+
+        }
+
+        public DataPoint(decimal x, decimal y, IEnumerable<DataSource> sources)
         {
             this.XValue = x;
             this.YValue = y;

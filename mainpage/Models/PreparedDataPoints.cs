@@ -110,6 +110,7 @@ namespace CleanTechSim.MainPage.Models
 
             return labels;
         }
+
         public static PreparedDataPoints VerifyAndCompute(string graphId, LineGraph lineGraph)
         {
             return VerifyAndCompute(graphId, lineGraph.Title, lineGraph.Lines, lineGraph.DataPointFormat);
@@ -124,7 +125,6 @@ namespace CleanTechSim.MainPage.Models
 
             List<decimal> sortedValues = new List<decimal>(allDistinctValues);
             sortedValues.Sort();
-
 
             decimal minXValue = sortedValues[0];
             decimal maxXValue = sortedValues[sortedValues.Count - 1];

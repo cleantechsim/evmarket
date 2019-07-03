@@ -16,12 +16,17 @@ namespace CleanTechSim.MainPage.Models
         }
 
         public LineGraph(string title, DataPointFormat dataPointFormat, params Line[] lines)
+            : this(title, dataPointFormat, (IEnumerable<Line>)lines)
+        {
+
+        }
+
+        public LineGraph(string title, DataPointFormat dataPointFormat, IEnumerable<Line> lines)
         {
             this.Title = title;
             this.DataPointFormat = dataPointFormat;
             this.Lines = new List<Line>(lines);
         }
-
     }
 
     public class Line
