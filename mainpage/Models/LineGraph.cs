@@ -6,12 +6,9 @@ namespace CleanTechSim.MainPage.Models
 
     public class LineGraph
     {
-
-        private readonly string title;
-        private readonly DataPointFormat dataPointFormat;
-
-        public string Title { get { return title; } }
-        public DataPointFormat DataPointFormat { get { return dataPointFormat; } }
+        public string Title { get; }
+        public DataPointFormat DataPointFormat { get; }
+        public IEnumerable<Line> Lines { get; set; }
 
         public LineGraph()
         {
@@ -20,42 +17,29 @@ namespace CleanTechSim.MainPage.Models
 
         public LineGraph(string title, DataPointFormat dataPointFormat, params Line[] lines)
         {
-            this.title = title;
-            this.dataPointFormat = dataPointFormat;
+            this.Title = title;
+            this.DataPointFormat = dataPointFormat;
             this.Lines = new List<Line>(lines);
         }
 
-        public List<Line> Lines { get; set; }
     }
 
     public class Line
     {
-        public string Label { get; set; }
-        public Color Color { get; set; }
-        /* 
-                public List<string> XLabels;
-
-                public List<string> YLabels;
-        */
-        public DataSeries DataSeries { get; set; }
+        public string Label { get; }
+        public Color Color { get; }
+        public DataSeries DataSeries { get; }
 
         public Line()
         {
 
         }
 
-        public Line(string label, Color color, /*  List<string> xLabels, List<string> yLabels ,*/ DataSeries dataSeries)
+        public Line(string label, Color color, DataSeries dataSeries)
         {
             this.Label = label;
             this.Color = color;
-            /*
-            this.XLabels = xLabels;
-            this.YLabels = yLabels;
-             */
             this.DataSeries = dataSeries;
         }
-
-
     }
-
 }

@@ -6,15 +6,11 @@ namespace CleanTechSim.MainPage.Models
 {
     public class DataSet
     {
-        private readonly string label;
-        private readonly Color color;
-        private readonly List<decimal?> values;
+        public string Label { get; }
 
-        public string Label { get { return label; } }
+        public Color Color { get; }
 
-        public Color Color { get { return color; } }
-
-        public IEnumerable<decimal?> Values { get { return values; } }
+        public IEnumerable<decimal?> Values { get; }
 
 
         public DataSet(string label, Color color, List<decimal?> values)
@@ -34,9 +30,9 @@ namespace CleanTechSim.MainPage.Models
                 throw new ArgumentNullException();
             }
 
-            this.label = label;
-            this.color = color;
-            this.values = values;
+            this.Label = label;
+            this.Color = color;
+            this.Values = values;
         }
     }
 

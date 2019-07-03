@@ -5,9 +5,14 @@ using System.Linq;
 
 namespace CleanTechSim.MainPage.Models
 {
-
     public class DataPoint
     {
+        public decimal XValue { get; }
+
+        public decimal YValue { get; }
+
+        public List<DataSource> Sources { get; set; }
+
 
         public DataPoint()
         {
@@ -36,13 +41,5 @@ namespace CleanTechSim.MainPage.Models
             this.YValue = y;
             this.Sources = new List<DataSource>(sources);
         }
-
-        public int Id { get; set; }
-
-        public decimal XValue { get; set; }
-
-        public decimal YValue { get; set; }
-
-        public List<DataSource> Sources { get; set; }
     }
 }

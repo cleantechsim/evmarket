@@ -7,20 +7,10 @@ namespace CleanTechSim.MainPage.Models
 {
     public class PreparedDataPoints
     {
-        private readonly string graphId;
-
-        private readonly string title;
-
-        private readonly List<string> labels;
-        private readonly List<DataSet> dataSets;
-
-        public string GraphId { get { return graphId; } }
-
-        public string Title { get { return title; } }
-
-        public IEnumerable<string> Labels { get { return labels; } }
-
-        public IEnumerable<DataSet> DataSets { get { return dataSets; } }
+        public string GraphId { get; }
+        public string Title { get; }
+        public IEnumerable<string> Labels { get; }
+        public IEnumerable<DataSet> DataSets { get; }
 
         private PreparedDataPoints(string graphId, string title, List<string> labels, List<DataSet> dataSets)
         {
@@ -39,10 +29,10 @@ namespace CleanTechSim.MainPage.Models
                 throw new ArgumentNullException();
             }
 
-            this.graphId = graphId;
-            this.title = title;
-            this.labels = labels;
-            this.dataSets = dataSets;
+            this.GraphId = graphId;
+            this.Title = title;
+            this.Labels = labels;
+            this.DataSets = dataSets;
         }
 
 
@@ -195,7 +185,5 @@ namespace CleanTechSim.MainPage.Models
             return new PreparedDataPoints(graphId, title, labels, dataSets);
 
         }
-
     }
-
 }

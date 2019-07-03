@@ -5,6 +5,11 @@ namespace CleanTechSim.MainPage.Models
 {
     public class DataSeries
     {
+        public DataSource Source { get; }
+
+        public List<DataPoint> DataPoints { get; }
+
+
         public DataSeries(params DataPoint[] dataPoints) : this(null, dataPoints)
         {
         }
@@ -14,12 +19,5 @@ namespace CleanTechSim.MainPage.Models
             this.Source = dataSource;
             this.DataPoints = new List<DataPoint>(dataPoints);
         }
-
-        public int Id { get; set; }
-
-        public DataSource Source { get; set; }
-
-        public List<DataPoint> DataPoints { get; set; }
-
     }
 }
