@@ -15,10 +15,10 @@ namespace mainpage.Controllers
 
         public IActionResult Index()
         {
-            IndexModel model = new IndexModel(PreparedDataPoints.VerifyAndCompute(
-                EV_ADOPTION_ID,
-                StaticData.EvAdoption.Lines,
-                new DataPointFormat(Encoding.YEAR_MONTH, Encoding.NUMBER)));
+            IndexModel model = new IndexModel(
+                PreparedDataPoints.VerifyAndCompute(
+                    EV_ADOPTION_ID,
+                    StaticData.EvAdoption));
 
             return View(model);
         }

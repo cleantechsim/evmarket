@@ -7,6 +7,10 @@
 }
 <div>
 
+    @if (!string.IsNullOrWhiteSpace(Model.Title)) {
+        <div class="lineGraphTitle">@Model.Title</div>
+    }
+    
     <canvas id="@elementId"></canvas>
 
     <script>

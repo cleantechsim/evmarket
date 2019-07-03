@@ -7,13 +7,21 @@ namespace CleanTechSim.MainPage.Models
     public class LineGraph
     {
 
+        private readonly string title;
+        private readonly DataPointFormat dataPointFormat;
+
+        public string Title { get { return title; } }
+        public DataPointFormat DataPointFormat { get { return dataPointFormat; } }
+
         public LineGraph()
         {
 
         }
 
-        public LineGraph(params Line[] lines)
+        public LineGraph(string title, DataPointFormat dataPointFormat, params Line[] lines)
         {
+            this.title = title;
+            this.dataPointFormat = dataPointFormat;
             this.Lines = new List<Line>(lines);
         }
 
