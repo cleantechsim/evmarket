@@ -45,7 +45,7 @@ namespace CleanTechSim.MainPage.Models
         {
             this.XValue = x;
             this.YValue = y;
-            this.Sources = new List<DataSource>(sources);
+            this.Sources = sources != null ? new List<DataSource>(sources) : null;
         }
     }
 }

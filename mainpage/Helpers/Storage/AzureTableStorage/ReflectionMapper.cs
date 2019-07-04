@@ -197,6 +197,10 @@ namespace CleanTechSim.MainPage.Helpers.Storage.AzureTableStorage
                     {
                         value = entityProperty.Int32Value;
                     }
+                    else if (valueType.Equals(typeof(decimal)))
+                    {
+                        value = (decimal)entityProperty.Int32Value;
+                    }
                     else
                     {
                         throw new NotImplementedException();

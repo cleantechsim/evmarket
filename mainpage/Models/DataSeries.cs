@@ -8,8 +8,14 @@ namespace CleanTechSim.MainPage.Models
         public DataSource Source { get; }
         public List<DataPoint> DataPoints { get; }
 
-        public DataSeries(params DataPoint[] dataPoints) : this(null, dataPoints)
+        public DataSeries(params DataPoint[] dataPoints) : this((DataSource)null, dataPoints)
         {
+        }
+
+        public DataSeries(string dataSource, params DataPoint[] dataPoints)
+            : this(new DataSource(dataSource), dataPoints)
+        {
+
         }
 
         public DataSeries(DataSource dataSource, DataPoint[] dataPoints)

@@ -16,6 +16,7 @@ namespace mainpage.Controllers
     public class HomeController : Controller
     {
         public const string EV_ADOPTION_ID = "evAdoption";
+        public const string BATTERY_COST_ID = "batteryCost";
 
         private readonly IDataStorage storage;
 
@@ -23,44 +24,61 @@ namespace mainpage.Controllers
         {
             string connectionString = Environment.GetEnvironmentVariable("AZURE_TABLE_STORAGE_CONNECTION_STRING");
 
-            this.storage = new AzureTableStorage(connectionString, typeof(MonthlyCountryEVCarSales));
+            this.storage = new AzureTableStorage(
+                connectionString,
+                typeof(MonthlyCountryEVCarSales),
+                typeof(BatteryCost));
         }
 
-        private LineGraph GetAll<T, KEY>(Type type, IGraphModelType<T, KEY> graphModelType)
+        private DataSeries GetDataSeries<T>(IEnumerable<T> lineElements, IGraphModelType<T> graphModelType)
+        {
+            List<DataPoint> dataPoints = new List<DataPoint>(lineElements.Count());
+
+            foreach (T lineElement in lineElements)
+            {
+                DataPoint dataPoint = new DataPoint(
+                    graphModelType.GetDataPointX(lineElement),
+                    graphModelType.GetDataPointY(lineElement),
+                    graphModelType.GetSources(lineElement)
+                );
+
+                dataPoints.Add(dataPoint);
+            }
+
+            DataSeries dataSeries = new DataSeries(null, dataPoints);
+
+            return dataSeries;
+        }
+
+        private LineGraph GetAllSingleLine<T>(Type type, ISingleLineGraphModelType<T> graphModelType)
+        {
+            IEnumerable<T> elements = storage.GetAll<T>(type);
+
+            DataSeries dataSeries = GetDataSeries<T>(elements, graphModelType);
+
+            return new LineGraph(
+                graphModelType.Title,
+                graphModelType.DataPointFormat,
+                new Line[] { new Line(null, Color.Green, dataSeries) });
+        }
+
+        private LineGraph GetAllMultiLine<T, KEY>(Type type, IMultiLineGraphModelType<T, KEY> graphModelType)
         {
             IEnumerable<T> elements = storage.GetAll<T>(type);
 
             IDictionary<KEY, List<T>> dictionary = graphModelType.GetByDistinctKeys(elements);
 
             // Add datapoints
-
-
             List<LineInfo> lineInfos = new List<LineInfo>(dictionary.Keys.Count());
 
             foreach (KEY key in dictionary.Keys)
             {
-                List<T> lineElements = dictionary[key];
-
-                List<DataPoint> dataPoints = new List<DataPoint>(lineElements.Count());
-
-                foreach (T lineElement in lineElements)
-                {
-                    DataPoint dataPoint = new DataPoint(
-                        graphModelType.GetDataPointX(lineElement),
-                        graphModelType.GetDataPointY(lineElement),
-                        graphModelType.GetSources(lineElement)
-                    );
-
-                    dataPoints.Add(dataPoint);
-                }
-
-                DataSeries dataSeries = new DataSeries(null, dataPoints);
+                DataSeries dataSeries = GetDataSeries(dictionary[key], graphModelType);
 
                 LineInfo lineInfo = new LineInfo(graphModelType.GetLineLabel(key), dataSeries);
 
                 lineInfos.Add(lineInfo);
             }
-
 
             // Sort in descending order
             lineInfos.Sort((value1, value2) => -value1.CompareTo(value2));
@@ -111,11 +129,15 @@ namespace mainpage.Controllers
         }
         public IActionResult Index()
         {
-
             IndexModel model = new IndexModel(
                 PreparedDataPoints.VerifyAndCompute(
                     EV_ADOPTION_ID,
-                    GetAll(typeof(MonthlyCountryEVCarSales), StaticData.EvAdoptionGraph)));
+                    GetAllMultiLine(typeof(MonthlyCountryEVCarSales), StaticData.EvAdoptionGraph)),
+
+                PreparedDataPoints.VerifyAndCompute(
+                    BATTERY_COST_ID,
+                    GetAllSingleLine(typeof(BatteryCost), StaticData.BatteryCostGraph))
+            );
 
             return View(model);
         }

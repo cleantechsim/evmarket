@@ -1,20 +1,22 @@
 
+@using System.Linq
 @using CleanTechSim.MainPage.Models
 @model PreparedDataPoints
 
 @{
-    string elementId = Model.GraphId;
+    string divElementId = Model.GraphId;
+    string canvasElementId = Model.GraphId + "Canvas";
 }
-<div>
+<div id="@divElementId">
 
     @if (!string.IsNullOrWhiteSpace(Model.Title)) {
         <div class="lineGraphTitle">@Model.Title</div>
     }
     
-    <canvas id="@elementId"></canvas>
+    <canvas id="@canvasElementId"></canvas>
 
     <script>
-        var ctx = document.getElementById('@elementId').getContext('2d');
+        var ctx = document.getElementById('@canvasElementId').getContext('2d');
 
         var chart = new Chart(ctx, {
             type : 'line',
@@ -74,7 +76,20 @@
                 ]
             },
 
-            options : {
+            'options' : {
+
+                @{
+                    bool anyWithoutLabel = Model.DataSets.Where(dataSet => string.IsNullOrWhiteSpace(dataSet.Label)).Any();
+                    if (anyWithoutLabel) {
+
+                        <text>
+                            'legend' : {
+                                'display' : false
+                            },
+                        </text>
+                    }
+                }
+
                 'spanGaps' : true
             }
 

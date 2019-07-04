@@ -67,15 +67,17 @@ namespace CleanTechSim.MainPage.Models
 
         private static List<string> ComputeLabelNames(DataPointFormat format, decimal minXValue, decimal maxXValue, ref List<decimal> allPossibleValues)
         {
-            List<string> labels = new List<string>();
+            List<string> labels;
 
             const int MONTH_MULTIPLICATOR = 100;
 
-            allPossibleValues = new List<decimal>();
 
             switch (format.XEncoding)
             {
                 case Encoding.YEAR_MONTH:
+                    labels = new List<string>();
+                    allPossibleValues = new List<decimal>();
+
                     // Add from labels
                     int minYear = (int)minXValue;
                     int minMonth = (int)(MONTH_MULTIPLICATOR * (minXValue - minYear));
@@ -102,6 +104,17 @@ namespace CleanTechSim.MainPage.Models
                         // Start at 1st month in next iteration
                         minMonth = 1;
                     }
+                    break;
+
+                case Encoding.YEAR:
+                case Encoding.INTEGER:
+
+                    IEnumerable<int> intValues = Enumerable.Range((int)minXValue, (int)(maxXValue - minXValue + 1)).Select(value => (int)value);
+
+                    allPossibleValues = intValues.Select(value => (decimal)value).ToList();
+
+                    labels = intValues.Select(value => value.ToString()).ToList();
+
                     break;
 
                 default:

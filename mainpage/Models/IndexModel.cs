@@ -8,8 +8,9 @@ namespace CleanTechSim.MainPage.Models
     {
 
         public PreparedDataPoints EVAdoption { get; set; }
+        public PreparedDataPoints BatteryCost { get; }
 
-        public IndexModel(PreparedDataPoints evAdoption)
+        public IndexModel(PreparedDataPoints evAdoption, PreparedDataPoints batteryCost)
         {
             if (evAdoption == null)
             {
@@ -17,6 +18,7 @@ namespace CleanTechSim.MainPage.Models
             }
 
             this.EVAdoption = evAdoption;
+            this.BatteryCost = batteryCost;
         }
 
     }

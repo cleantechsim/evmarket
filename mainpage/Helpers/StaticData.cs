@@ -7,19 +7,28 @@ namespace CleanTechSim.MainPage.Helpers
 {
     public class StaticData
     {
+        public static IMultiLineGraphModelType<MonthlyCountryEVCarSales, string> EvAdoptionGraph = new MultiLineGraphModelType<MonthlyCountryEVCarSales, string>(
 
-        public static IGraphModelType<MonthlyCountryEVCarSales, string> EvAdoptionGraph = new GraphModelType<MonthlyCountryEVCarSales, string>(
+            "EV percent marketshare by month",
 
-            "EV percent of marketshare by month",
             Encoding.YEAR_MONTH,
             Encoding.NUMBER,
 
-            instance => instance.Country,
             instance => instance.Year + ((decimal)instance.Month) / 100,
             instance => instance.SalesPercent,
 
+            instance => instance.Country,
             key => key
         );
+
+        public static ISingleLineGraphModelType<BatteryCost> BatteryCostGraph = new SingleLineGraphModelType<BatteryCost>(
+            "Battery cost in $/kWh",
+
+            Encoding.YEAR,
+            Encoding.NUMBER,
+
+            instance => instance.Century * 100 + instance.Year,
+            instance => instance.Cost);
 
     }
 }

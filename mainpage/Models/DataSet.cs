@@ -15,11 +15,6 @@ namespace CleanTechSim.MainPage.Models
 
         public DataSet(string label, Color color, List<decimal?> values)
         {
-            if (label == null)
-            {
-                throw new ArgumentNullException();
-            }
-
             if (color == null)
             {
                 throw new ArgumentNullException();
@@ -33,6 +28,11 @@ namespace CleanTechSim.MainPage.Models
             this.Label = label;
             this.Color = color;
             this.Values = values;
+        }
+
+        public bool HasLabel()
+        {
+            return !string.IsNullOrWhiteSpace(Label);
         }
     }
 
