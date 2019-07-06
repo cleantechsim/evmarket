@@ -7,10 +7,12 @@
     string divElementId = Model.GraphId;
     string canvasElementId = Model.GraphId + "Canvas";
 }
-<div id="@divElementId">
+<div id="@divElementId" class="graph">
 
     @if (!string.IsNullOrWhiteSpace(Model.Title)) {
-        <div class="lineGraphTitle">@Model.Title</div>
+        <div>
+            <span class="lineGraphTitle">@Model.Title</span>-<span class="lineGraphSubTitle">@Model.SubTitle</span>
+        </div>
     }
     
     <canvas id="@canvasElementId"></canvas>

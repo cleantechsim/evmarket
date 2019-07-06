@@ -66,6 +66,7 @@ namespace mainpage.Controllers
 
             return new LineGraph(
                 graphModelType.Title,
+                graphModelType.SubTitle,
                 graphModelType.DataPointFormat,
                 new Line[] { new Line(null, Color.Green, dataSeries) });
         }
@@ -109,6 +110,7 @@ namespace mainpage.Controllers
 
             return new LineGraph(
                 graphModelType.Title,
+                graphModelType.SubTitle,
                 graphModelType.DataPointFormat,
                 lines);
         }

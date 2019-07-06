@@ -10,6 +10,8 @@ namespace CleanTechSim.MainPage.Helpers.Model
     {
         string Title { get; }
 
+        string SubTitle { get; }
+
         DataPointFormat DataPointFormat { get; }
 
         PREPARED Prepare(INPUT input);

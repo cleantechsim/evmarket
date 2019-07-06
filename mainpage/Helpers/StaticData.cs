@@ -12,7 +12,7 @@ namespace CleanTechSim.MainPage.Helpers
     public class StaticData
     {
         public static IMultiLineGraphModelType<MonthlyCountryEVCarSales, string> EvAdoptionGraph = new MultiLineGraphModelType<MonthlyCountryEVCarSales, string>(
-
+            "Awareness",
             "EV percent marketshare by month",
 
             Encoding.YEAR_MONTH,
@@ -26,6 +26,7 @@ namespace CleanTechSim.MainPage.Helpers
         );
 
         public static ISingleLineGraphModelType<BatteryCost> BatteryCostGraph = new SingleLineGraphModelType<BatteryCost>(
+            "Cost",
             "Battery cost in $/kWh",
 
             Encoding.YEAR,
@@ -97,6 +98,7 @@ namespace CleanTechSim.MainPage.Helpers
 
         public static IGraphModelType<IEnumerable<Vehicle>, EVRangePrepared> EVRangeGraph
             = new GraphModelType<IEnumerable<Vehicle>, EVRangePrepared>(
+            "Range",
             "EV average range for new models",
 
             Encoding.YEAR,

@@ -29,11 +29,13 @@ namespace CleanTechSim.MainPage.Helpers.Model
         private readonly GetYFromInputAndPrepared<INPUT, PREPARED> getY;
 
         public string Title { get; }
+        public string SubTitle { get; }
         public DataPointFormat DataPointFormat { get; }
 
 
         public GraphModelType(
             string title,
+            string subTitle,
 
             Encoding xEncoding,
             Encoding yEncoding,
@@ -46,6 +48,8 @@ namespace CleanTechSim.MainPage.Helpers.Model
             )
         {
             this.Title = title;
+            this.SubTitle = subTitle;
+
             this.DataPointFormat = new DataPointFormat(xEncoding, yEncoding);
 
             this.prepare = prepare;
@@ -90,6 +94,7 @@ namespace CleanTechSim.MainPage.Helpers.Model
 
         public InstanceGraphModelType(
             string title,
+            string subTitle,
 
             Encoding xEncoding,
             Encoding yEncoding,
@@ -100,6 +105,8 @@ namespace CleanTechSim.MainPage.Helpers.Model
         )
         : base(
             title,
+            subTitle,
+
             xEncoding,
             yEncoding,
             null,
@@ -128,6 +135,7 @@ namespace CleanTechSim.MainPage.Helpers.Model
     {
         public SingleLineGraphModelType(
             string title,
+            string subTitle,
             Encoding xEncoding,
             Encoding yEncoding,
             GetXFromInstance<INSTANCE> getX,
@@ -135,6 +143,7 @@ namespace CleanTechSim.MainPage.Helpers.Model
 
             : base(
                 title,
+                subTitle,
                 xEncoding,
                 yEncoding,
                 instances => null,
@@ -154,6 +163,7 @@ namespace CleanTechSim.MainPage.Helpers.Model
 
         public SingleLineInstanceGraphModelTypeWithPrepared(
             string title,
+            string subTitle,
             Encoding xEncoding,
             Encoding yEncoding,
             Prepare<IEnumerable<INSTANCE>, PREPARED> prepare,
@@ -162,6 +172,7 @@ namespace CleanTechSim.MainPage.Helpers.Model
 
             : base(
                 title,
+                subTitle,
                 xEncoding,
                 yEncoding,
                 prepare,
@@ -186,6 +197,7 @@ namespace CleanTechSim.MainPage.Helpers.Model
 
         public MultiLineGraphModelType(
             string title,
+            string subTitle,
             Encoding xEncoding,
             Encoding yEncoding,
             GetXFromInstance<INSTANCE> getX,
@@ -194,6 +206,7 @@ namespace CleanTechSim.MainPage.Helpers.Model
             GetLabel<KEY> getLabel)
             : base(
                 title,
+                subTitle,
                 xEncoding,
                 yEncoding,
                 getX,

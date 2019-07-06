@@ -50,6 +50,7 @@ namespace CleanTechSim.MainPage.Models
                 "evAdoption",
                 new LineGraph(
                     "Test lines",
+                    "Subtitle",
                     new DataPointFormat(Encoding.YEAR_MONTH, Encoding.NUMBER),
                     lines
                 )

@@ -7,6 +7,7 @@ namespace CleanTechSim.MainPage.Models
     public class LineGraph
     {
         public string Title { get; }
+        public string SubTitle { get; }
         public DataPointFormat DataPointFormat { get; }
         public IEnumerable<Line> Lines { get; set; }
 
@@ -15,15 +16,16 @@ namespace CleanTechSim.MainPage.Models
 
         }
 
-        public LineGraph(string title, DataPointFormat dataPointFormat, params Line[] lines)
-            : this(title, dataPointFormat, (IEnumerable<Line>)lines)
+        public LineGraph(string title, string subTitle, DataPointFormat dataPointFormat, params Line[] lines)
+            : this(title, subTitle, dataPointFormat, (IEnumerable<Line>)lines)
         {
 
         }
 
-        public LineGraph(string title, DataPointFormat dataPointFormat, IEnumerable<Line> lines)
+        public LineGraph(string title, string subTitle, DataPointFormat dataPointFormat, IEnumerable<Line> lines)
         {
             this.Title = title;
+            this.SubTitle = subTitle;
             this.DataPointFormat = dataPointFormat;
             this.Lines = new List<Line>(lines);
         }
