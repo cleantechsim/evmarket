@@ -18,6 +18,7 @@ namespace mainpage.Controllers
         public const string EV_ADOPTION_ID = "evAdoption";
         public const string BATTERY_COST_ID = "batteryCost";
         public const string EV_RANGE_ID = "evRange";
+        public const string EV_CHOICE_ID = "evChoice";
 
         private readonly IDataStorage storage;
 
@@ -150,7 +151,11 @@ namespace mainpage.Controllers
 
                 PreparedDataPoints.VerifyAndCompute(
                     EV_RANGE_ID,
-                    GetAllSingleLine(typeof(Vehicle), StaticData.EVRangeGraph))
+                    GetAllSingleLine(typeof(Vehicle), StaticData.EVRangeGraph)),
+
+                PreparedDataPoints.VerifyAndCompute(
+                    EV_CHOICE_ID,
+                    GetAllSingleLine(typeof(Vehicle), StaticData.EVChoiceGraph))
             );
 
             return View(model);

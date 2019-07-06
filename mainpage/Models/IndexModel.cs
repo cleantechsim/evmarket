@@ -10,17 +10,18 @@ namespace CleanTechSim.MainPage.Models
         public PreparedDataPoints EVAdoption { get; }
         public PreparedDataPoints BatteryCost { get; }
         public PreparedDataPoints EVRange { get; }
+        public PreparedDataPoints EVChoice { get; }
 
-        public IndexModel(PreparedDataPoints evAdoption, PreparedDataPoints batteryCost, PreparedDataPoints evRange)
+        public IndexModel(
+            PreparedDataPoints evAdoption,
+            PreparedDataPoints batteryCost,
+            PreparedDataPoints evRange,
+            PreparedDataPoints evChoice)
         {
-            if (evAdoption == null)
-            {
-                throw new ArgumentNullException();
-            }
-
             this.EVAdoption = evAdoption;
             this.BatteryCost = batteryCost;
             this.EVRange = evRange;
+            this.EVChoice = evChoice;
         }
     }
 }

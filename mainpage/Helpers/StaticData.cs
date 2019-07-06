@@ -37,13 +37,13 @@ namespace CleanTechSim.MainPage.Helpers
         );
 
 
-        private static List<int> GetDistinctSortedYearsForVehicles(IEnumerable<Vehicle> instances)
+        private static List<int> GetDistinctSortedYearsForVehicles(IEnumerable<Vehicle> instances, int? maxYear = null)
         {
             HashSet<int> distinctYears = new HashSet<int>();
 
             foreach (Vehicle v in instances)
             {
-                if (v.Year.HasValue)
+                if (v.Year.HasValue && (!maxYear.HasValue || v.Year.Value <= maxYear.Value))
                 {
                     distinctYears.Add(v.Year.Value);
                 }
@@ -56,15 +56,23 @@ namespace CleanTechSim.MainPage.Helpers
             return sortedYears;
         }
 
-
-        public class EVRangePrepared
+        public class EVYearsPrepared
         {
             internal IEnumerable<int> YearsSorted { get; }
+
+            internal EVYearsPrepared(IEnumerable<int> yearsSorted)
+            {
+                this.YearsSorted = yearsSorted;
+            }
+        }
+
+        public class EVRangePrepared : EVYearsPrepared
+        {
             internal IDictionary<int, int> AverageRangeByYear { get; }
 
             internal EVRangePrepared(IEnumerable<int> yearsSorted, IDictionary<int, int> averageRangePerYear)
+                : base(yearsSorted)
             {
-                this.YearsSorted = yearsSorted;
                 this.AverageRangeByYear = averageRangePerYear;
             }
         }
@@ -85,14 +93,11 @@ namespace CleanTechSim.MainPage.Helpers
                                                         && v.Year.Value == year
                                                     select v;
 
-                Console.WriteLine("## vehicles for year " + yearVehicles.Count());
-
                 averageRangeByYear[year] = (int)(from Vehicle v in yearVehicles
                                                  where wltpForCar.ContainsKey(v)
                                                  select wltpForCar[v]).Average();
-
-
             }
+
             return new EVRangePrepared(sortedYears, averageRangeByYear);
         }
 
@@ -112,5 +117,51 @@ namespace CleanTechSim.MainPage.Helpers
             (instances, prepared, index) => prepared.AverageRangeByYear[prepared.YearsSorted.ElementAt(index)]
         );
 
+        public class EVChoicePrepared : EVYearsPrepared
+        {
+            internal IDictionary<int, int> NumberOfNewModelsByYear { get; }
+
+            internal EVChoicePrepared(IEnumerable<int> yearsSorted, IDictionary<int, int> numberOfModelsByYear)
+                : base(yearsSorted)
+            {
+                this.NumberOfNewModelsByYear = numberOfModelsByYear;
+            }
+        }
+
+        internal static EVChoicePrepared ComputeNumberOfNewModelsPerYear(IEnumerable<Vehicle> instances)
+        {
+            List<int> sortedYears = GetDistinctSortedYearsForVehicles(instances, DateTime.Now.Year);
+
+            // Make dictionary of average by year
+            Dictionary<int, int> numberOfNewModelsByYear = new Dictionary<int, int>();
+
+            foreach (int year in sortedYears)
+            {
+                IEnumerable<Vehicle> yearVehicles = from Vehicle v in instances
+                                                    where
+                                                           v.Year != null
+                                                        && v.Year.Value == year
+                                                    select v;
+
+                numberOfNewModelsByYear[year] = yearVehicles.Count();
+            }
+            return new EVChoicePrepared(sortedYears, numberOfNewModelsByYear);
+        }
+
+        public static IGraphModelType<IEnumerable<Vehicle>, EVChoicePrepared> EVChoiceGraph
+            = new GraphModelType<IEnumerable<Vehicle>, EVChoicePrepared>(
+            "Choice",
+            "Number of new models per year",
+
+            Encoding.YEAR,
+            Encoding.INTEGER,
+
+            instances => ComputeNumberOfNewModelsPerYear(instances),
+
+            (instances, prepared) => prepared.YearsSorted.Count(),
+
+            (instances, prepared, index) => prepared.YearsSorted.ElementAt(index),
+            (instances, prepared, index) => prepared.NumberOfNewModelsByYear[prepared.YearsSorted.ElementAt(index)]
+        );
     }
 }

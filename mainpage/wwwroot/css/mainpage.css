@@ -82,6 +82,9 @@ main
     font-family: sans-serif;
 
     text-align: center;
+
+    display: inline-block;
+
 }
 
 .lineGraphTitle
@@ -95,7 +98,4 @@ main
     font-size: 0.90em;
 }
 
-#evAdoption, #batteryCost, #evRange {
-    display: inline-block;
-}
 
