@@ -9,7 +9,7 @@ namespace CleanTechSim.MainPage.Models
     {
         public decimal XValue { get; }
 
-        public decimal YValue { get; }
+        public decimal? YValue { get; }
 
         public List<DataSource> Sources { get; set; }
 
@@ -19,7 +19,7 @@ namespace CleanTechSim.MainPage.Models
 
         }
 
-        public DataPoint(decimal x, decimal y) : this(x, y, (DataSource[])null)
+        public DataPoint(decimal x, decimal? y) : this(x, y, (DataSource[])null)
         {
 
         }
@@ -41,7 +41,7 @@ namespace CleanTechSim.MainPage.Models
 
         }
 
-        public DataPoint(decimal x, decimal y, IEnumerable<DataSource> sources)
+        public DataPoint(decimal x, decimal? y, IEnumerable<DataSource> sources)
         {
             this.XValue = x;
             this.YValue = y;

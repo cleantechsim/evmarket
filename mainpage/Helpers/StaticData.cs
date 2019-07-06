@@ -163,5 +163,67 @@ namespace CleanTechSim.MainPage.Helpers
             (instances, prepared, index) => prepared.YearsSorted.ElementAt(index),
             (instances, prepared, index) => prepared.NumberOfNewModelsByYear[prepared.YearsSorted.ElementAt(index)]
         );
+
+
+        public class EVPerformancePrepared : EVYearsPrepared
+        {
+            internal IDictionary<int, decimal?> AveragePerformanceByYear { get; }
+
+            internal EVPerformancePrepared(IEnumerable<int> yearsSorted, IDictionary<int, decimal?> averagePerformancePerYear)
+                : base(yearsSorted)
+            {
+                this.AveragePerformanceByYear = averagePerformancePerYear;
+            }
+        }
+
+        internal static EVPerformancePrepared ComputeAveragePerformancePerYear(IEnumerable<Vehicle> instances)
+        {
+            List<int> sortedYears = GetDistinctSortedYearsForVehicles(instances);
+
+            // Make dictionary of average by year
+            Dictionary<int, decimal?> averagePerformanceByYear = new Dictionary<int, decimal?>();
+
+            foreach (int year in sortedYears)
+            {
+                IEnumerable<Vehicle> yearVehiclesWithAcceleration = from Vehicle v in instances
+                                                                    where
+                                                                           v.Year != null
+                                                                        && v.Year.Value == year
+                                                                        && v.Acceleration.HasValue
+                                                                    select v;
+
+                averagePerformanceByYear[year] = yearVehiclesWithAcceleration.Any()
+                        ? Math.Round(
+                            yearVehiclesWithAcceleration.Average(v => v.Acceleration.Value),
+                            1,
+                            MidpointRounding.AwayFromZero)
+                        : default(decimal?);
+
+            }
+            return new EVPerformancePrepared(sortedYears, averagePerformanceByYear);
+        }
+
+        public static IGraphModelType<IEnumerable<Vehicle>, EVPerformancePrepared> EVPerformanceGraph
+            = new GraphModelType<IEnumerable<Vehicle>, EVPerformancePrepared>(
+            "Performance",
+            "EV 0-100 km/t new models",
+
+            Encoding.YEAR,
+            Encoding.NUMBER,
+
+            instances => ComputeAveragePerformancePerYear(instances),
+
+            (instances, prepared) => prepared.YearsSorted.Count(),
+
+            (instances, prepared, index) => prepared.YearsSorted.ElementAt(index),
+            (instances, prepared, index) =>
+            {
+                int year = prepared.YearsSorted.ElementAt(index);
+
+                decimal? accelleration = prepared.AveragePerformanceByYear[year];
+
+                return accelleration;
+            }
+        );
     }
 }

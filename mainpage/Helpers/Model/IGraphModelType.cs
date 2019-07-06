@@ -20,7 +20,7 @@ namespace CleanTechSim.MainPage.Helpers.Model
 
         decimal GetDataPointX(INPUT input, PREPARED prepared, int index);
 
-        decimal GetDataPointY(INPUT input, PREPARED prepared, int index);
+        decimal? GetDataPointY(INPUT input, PREPARED prepared, int index);
 
         IEnumerable<DataSource> GetSources(INPUT input, PREPARED prepared, int index);
     }

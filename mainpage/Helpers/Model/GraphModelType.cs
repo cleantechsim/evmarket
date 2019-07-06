@@ -14,7 +14,7 @@ namespace CleanTechSim.MainPage.Helpers.Model
     public delegate int GetNumXFromInputAndPrepared<INPUT, PREPARED>(INPUT input, PREPARED prepared);
 
     public delegate decimal GetXFromInputAndPrepared<INPUT, PREPARED>(INPUT input, PREPARED prepared, int index);
-    public delegate decimal GetYFromInputAndPrepared<INPUT, PREPARED>(INPUT input, PREPARED prepared, int index);
+    public delegate decimal? GetYFromInputAndPrepared<INPUT, PREPARED>(INPUT input, PREPARED prepared, int index);
 
     public delegate string GetLabel<KEY>(KEY key);
 
@@ -74,7 +74,7 @@ namespace CleanTechSim.MainPage.Helpers.Model
             return getX.Invoke(input, prepared, index);
         }
 
-        public decimal GetDataPointY(INPUT input, PREPARED prepared, int index)
+        public decimal? GetDataPointY(INPUT input, PREPARED prepared, int index)
         {
             return getY.Invoke(input, prepared, index);
         }

@@ -19,6 +19,7 @@ namespace mainpage.Controllers
         public const string BATTERY_COST_ID = "batteryCost";
         public const string EV_RANGE_ID = "evRange";
         public const string EV_CHOICE_ID = "evChoice";
+        public const string EV_PERFORMANCE_ID = "evPerformance";
 
         private readonly IDataStorage storage;
 
@@ -128,7 +129,7 @@ namespace mainpage.Controllers
                 this.Label = label;
                 this.DataSeries = dataSeries;
 
-                this.dataSeriesSum = dataSeries.DataPoints.Sum(dataPoint => dataPoint.YValue);
+                this.dataSeriesSum = dataSeries.DataPoints.Sum(dataPoint => dataPoint.YValue.HasValue ? dataPoint.YValue.Value : 0m);
             }
 
             public int CompareTo(object obj)
@@ -155,7 +156,11 @@ namespace mainpage.Controllers
 
                 PreparedDataPoints.VerifyAndCompute(
                     EV_CHOICE_ID,
-                    GetAllSingleLine(typeof(Vehicle), StaticData.EVChoiceGraph))
+                    GetAllSingleLine(typeof(Vehicle), StaticData.EVChoiceGraph)),
+
+                PreparedDataPoints.VerifyAndCompute(
+                    EV_PERFORMANCE_ID,
+                    GetAllSingleLine(typeof(Vehicle), StaticData.EVPerformanceGraph))
             );
 
             return View(model);
