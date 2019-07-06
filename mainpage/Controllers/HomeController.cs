@@ -17,6 +17,7 @@ namespace mainpage.Controllers
     {
         public const string EV_ADOPTION_ID = "evAdoption";
         public const string BATTERY_COST_ID = "batteryCost";
+        public const string EV_RANGE_ID = "evRange";
 
         private readonly IDataStorage storage;
 
@@ -27,19 +28,26 @@ namespace mainpage.Controllers
             this.storage = new AzureTableStorage(
                 connectionString,
                 typeof(MonthlyCountryEVCarSales),
-                typeof(BatteryCost));
+                typeof(BatteryCost),
+                typeof(Vehicle));
         }
 
-        private DataSeries GetDataSeries<T>(IEnumerable<T> lineElements, IGraphModelType<T> graphModelType)
+        private DataSeries GetDataSeries<T, PREPARED>(IEnumerable<T> lineElements, IGraphModelType<IEnumerable<T>, PREPARED> graphModelType)
         {
-            List<DataPoint> dataPoints = new List<DataPoint>(lineElements.Count());
 
-            foreach (T lineElement in lineElements)
+            PREPARED prepared = graphModelType.Prepare(lineElements);
+
+            int num = graphModelType.GetNumX(lineElements, prepared);
+            List<DataPoint> dataPoints = new List<DataPoint>(num);
+
+            for (int i = 0; i < num; ++i)
             {
+                T lineElement = lineElements.ElementAt(i);
+
                 DataPoint dataPoint = new DataPoint(
-                    graphModelType.GetDataPointX(lineElement),
-                    graphModelType.GetDataPointY(lineElement),
-                    graphModelType.GetSources(lineElement)
+                    graphModelType.GetDataPointX(lineElements, prepared, i),
+                    graphModelType.GetDataPointY(lineElements, prepared, i),
+                    graphModelType.GetSources(lineElements, prepared, i)
                 );
 
                 dataPoints.Add(dataPoint);
@@ -50,11 +58,11 @@ namespace mainpage.Controllers
             return dataSeries;
         }
 
-        private LineGraph GetAllSingleLine<T>(Type type, ISingleLineGraphModelType<T> graphModelType)
+        private LineGraph GetAllSingleLine<INSTANCE, PREPARED>(Type type, IGraphModelType<IEnumerable<INSTANCE>, PREPARED> graphModelType)
         {
-            IEnumerable<T> elements = storage.GetAll<T>(type);
+            IEnumerable<INSTANCE> elements = storage.GetAll<INSTANCE>(type);
 
-            DataSeries dataSeries = GetDataSeries<T>(elements, graphModelType);
+            DataSeries dataSeries = GetDataSeries<INSTANCE, PREPARED>(elements, graphModelType);
 
             return new LineGraph(
                 graphModelType.Title,
@@ -136,7 +144,11 @@ namespace mainpage.Controllers
 
                 PreparedDataPoints.VerifyAndCompute(
                     BATTERY_COST_ID,
-                    GetAllSingleLine(typeof(BatteryCost), StaticData.BatteryCostGraph))
+                    GetAllSingleLine(typeof(BatteryCost), StaticData.BatteryCostGraph)),
+
+                PreparedDataPoints.VerifyAndCompute(
+                    EV_RANGE_ID,
+                    GetAllSingleLine(typeof(Vehicle), StaticData.EVRangeGraph))
             );
 
             return View(model);

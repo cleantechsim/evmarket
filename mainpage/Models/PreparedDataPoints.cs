@@ -35,7 +35,6 @@ namespace CleanTechSim.MainPage.Models
             this.DataSets = dataSets;
         }
 
-
         private static HashSet<decimal> GetDistinctXValuesForAllDataSeries(IEnumerable<DataSeries> dataSeries)
         {
 
@@ -70,7 +69,6 @@ namespace CleanTechSim.MainPage.Models
             List<string> labels;
 
             const int MONTH_MULTIPLICATOR = 100;
-
 
             switch (format.XEncoding)
             {

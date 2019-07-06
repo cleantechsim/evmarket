@@ -8,100 +8,214 @@ using CleanTechSim.MainPage.Models.Persistent;
 namespace CleanTechSim.MainPage.Helpers.Model
 {
     public delegate KEY GetKey<T, KEY>(T instance);
-    public delegate decimal GetX<T>(T instance);
-    public delegate decimal GetY<T>(T instance);
+
+    public delegate PREPARED Prepare<INPUT, PREPARED>(INPUT input);
+
+    public delegate int GetNumXFromInputAndPrepared<INPUT, PREPARED>(INPUT input, PREPARED prepared);
+
+    public delegate decimal GetXFromInputAndPrepared<INPUT, PREPARED>(INPUT input, PREPARED prepared, int index);
+    public delegate decimal GetYFromInputAndPrepared<INPUT, PREPARED>(INPUT input, PREPARED prepared, int index);
+
     public delegate string GetLabel<KEY>(KEY key);
 
-    public abstract class GraphModelType<T>
-        : IGraphModelType<T> where T : BasePersistentModel
+    public class GraphModelType<INPUT, PREPARED>
+        : IGraphModelType<INPUT, PREPARED>
     {
 
-        private readonly GetX<T> getX;
-        private readonly GetY<T> getY;
+        private readonly Prepare<INPUT, PREPARED> prepare;
+
+        private readonly GetNumXFromInputAndPrepared<INPUT, PREPARED> getNumX;
+        private readonly GetXFromInputAndPrepared<INPUT, PREPARED> getX;
+        private readonly GetYFromInputAndPrepared<INPUT, PREPARED> getY;
 
         public string Title { get; }
         public DataPointFormat DataPointFormat { get; }
 
+
         public GraphModelType(
             string title,
+
             Encoding xEncoding,
             Encoding yEncoding,
-            GetX<T> getX,
-            GetY<T> getY)
+
+            Prepare<INPUT, PREPARED> prepare,
+
+            GetNumXFromInputAndPrepared<INPUT, PREPARED> getNumX,
+            GetXFromInputAndPrepared<INPUT, PREPARED> getX,
+            GetYFromInputAndPrepared<INPUT, PREPARED> getY
+            )
         {
             this.Title = title;
             this.DataPointFormat = new DataPointFormat(xEncoding, yEncoding);
 
+            this.prepare = prepare;
+
+            this.getNumX = getNumX;
             this.getX = getX;
             this.getY = getY;
         }
 
-
-        public decimal GetDataPointX(T instance)
+        public PREPARED Prepare(INPUT input)
         {
-            return getX.Invoke(instance);
+            return prepare != null ? prepare.Invoke(input) : default(PREPARED);
         }
 
-        public decimal GetDataPointY(T instance)
+        public int GetNumX(INPUT input, PREPARED prepared)
         {
-            return getY.Invoke(instance);
+            return getNumX.Invoke(input, prepared);
         }
 
-        public IEnumerable<DataSource> GetSources(T instance)
+        public decimal GetDataPointX(INPUT input, PREPARED prepared, int index)
         {
-            return instance.Sources.Select(source => new DataSource(source));
+            return getX.Invoke(input, prepared, index);
+        }
+
+        public decimal GetDataPointY(INPUT input, PREPARED prepared, int index)
+        {
+            return getY.Invoke(input, prepared, index);
+        }
+
+        public virtual IEnumerable<DataSource> GetSources(INPUT input, PREPARED prepared, int index)
+        {
+            return Enumerable.Empty<DataSource>();
         }
     }
 
-    public class SingleLineGraphModelType<T>
-        : GraphModelType<T>, ISingleLineGraphModelType<T> where T : BasePersistentModel
+    public delegate decimal GetXFromInstance<T>(T instance);
+    public delegate decimal GetYFromInstance<T>(T instance);
+
+    public class InstanceGraphModelType<INSTANCE, PREPARED>
+        : GraphModelType<IEnumerable<INSTANCE>, PREPARED> where INSTANCE : BasePersistentModel
+    {
+
+        public InstanceGraphModelType(
+            string title,
+
+            Encoding xEncoding,
+            Encoding yEncoding,
+
+            GetXFromInstance<INSTANCE> getX,
+            GetYFromInstance<INSTANCE> getY
+
+        )
+        : base(
+            title,
+            xEncoding,
+            yEncoding,
+            null,
+            (input, prepared) => input.Count(),
+            (input, prepared, index) => getX.Invoke(input.ElementAt(index)),
+            (input, prepared, index) => getY.Invoke(input.ElementAt(index)))
+        {
+
+        }
+
+        internal static IEnumerable<DataSource> GetSourcesFromInstances<T>(IEnumerable<T> instances, int index)
+            where T : BasePersistentModel
+        {
+            return instances.ElementAt(index).Sources.Select(source => new DataSource(source));
+        }
+
+        public override IEnumerable<DataSource> GetSources(IEnumerable<INSTANCE> input, PREPARED prepared, int index)
+        {
+            return GetSourcesFromInstances(input, index);
+        }
+    }
+
+    public class SingleLineGraphModelType<INSTANCE>
+        : SingleLineInstanceGraphModelTypeWithPrepared<INSTANCE, object>,
+          ISingleLineGraphModelType<INSTANCE> where INSTANCE : BasePersistentModel
     {
         public SingleLineGraphModelType(
             string title,
             Encoding xEncoding,
             Encoding yEncoding,
-            GetX<T> getX,
-            GetY<T> getY)
+            GetXFromInstance<INSTANCE> getX,
+            GetYFromInstance<INSTANCE> getY)
 
-            : base(title, xEncoding, yEncoding, getX, getY)
+            : base(
+                title,
+                xEncoding,
+                yEncoding,
+                instances => null,
+                getX,
+                (input, prepared, index) => getY.Invoke(input.ElementAt(index)))
         {
 
         }
     }
 
-    public class MultiLineGraphModelType<T, KEY>
-        : GraphModelType<T>, IMultiLineGraphModelType<T, KEY> where T : BasePersistentModel
+    public class SingleLineInstanceGraphModelTypeWithPrepared<INSTANCE, PREPARED>
+        : GraphModelType<IEnumerable<INSTANCE>, PREPARED>,
+          ISingleLineGraphModelTypeWithPrepared<INSTANCE, PREPARED>
+
+          where INSTANCE : BasePersistentModel
     {
-        private readonly GetKey<T, KEY> getKey;
+
+        public SingleLineInstanceGraphModelTypeWithPrepared(
+            string title,
+            Encoding xEncoding,
+            Encoding yEncoding,
+            Prepare<IEnumerable<INSTANCE>, PREPARED> prepare,
+            GetXFromInstance<INSTANCE> getX,
+            GetYFromInputAndPrepared<IEnumerable<INSTANCE>, PREPARED> getY)
+
+            : base(
+                title,
+                xEncoding,
+                yEncoding,
+                prepare,
+                (input, prepared) => input.Count(),
+                (input, prepared, index) => getX.Invoke(input.ElementAt(index)),
+                getY)
+        {
+        }
+
+        public override IEnumerable<DataSource> GetSources(IEnumerable<INSTANCE> input, PREPARED prepared, int index)
+        {
+            return InstanceGraphModelType<INSTANCE, PREPARED>.GetSourcesFromInstances(input, index);
+        }
+    }
+
+    public class MultiLineGraphModelType<INSTANCE, KEY>
+        : InstanceGraphModelType<INSTANCE, object>,
+        IMultiLineGraphModelType<INSTANCE, KEY> where INSTANCE : BasePersistentModel
+    {
+        private readonly GetKey<INSTANCE, KEY> getKey;
         private readonly GetLabel<KEY> getLabel;
 
         public MultiLineGraphModelType(
             string title,
             Encoding xEncoding,
             Encoding yEncoding,
-            GetX<T> getX,
-            GetY<T> getY,
-            GetKey<T, KEY> getKey,
+            GetXFromInstance<INSTANCE> getX,
+            GetYFromInstance<INSTANCE> getY,
+            GetKey<INSTANCE, KEY> getKey,
             GetLabel<KEY> getLabel)
-            : base(title, xEncoding, yEncoding, getX, getY)
+            : base(
+                title,
+                xEncoding,
+                yEncoding,
+                getX,
+                getY)
         {
             this.getKey = getKey;
             this.getLabel = getLabel;
         }
 
-        public IDictionary<KEY, List<T>> GetByDistinctKeys(IEnumerable<T> instances)
+        public IDictionary<KEY, List<INSTANCE>> GetByDistinctKeys(IEnumerable<INSTANCE> instances)
         {
-            Dictionary<KEY, List<T>> dictionary = new Dictionary<KEY, List<T>>();
+            Dictionary<KEY, List<INSTANCE>> dictionary = new Dictionary<KEY, List<INSTANCE>>();
 
-            foreach (T instance in instances)
+            foreach (INSTANCE instance in instances)
             {
                 KEY key = getKey.Invoke(instance);
 
-                List<T> instancesForKey;
+                List<INSTANCE> instancesForKey;
 
                 if (!dictionary.TryGetValue(key, out instancesForKey))
                 {
-                    instancesForKey = new List<T>();
+                    instancesForKey = new List<INSTANCE>();
 
                     dictionary[key] = instancesForKey;
                 }
@@ -118,3 +232,4 @@ namespace CleanTechSim.MainPage.Helpers.Model
         }
     }
 }
+

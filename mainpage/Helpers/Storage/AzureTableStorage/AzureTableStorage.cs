@@ -23,7 +23,7 @@ namespace CleanTechSim.MainPage.Helpers.Storage.AzureTableStorage
         {
             CloudStorageAccount storageAccount = CloudStorageAccount.Parse(connectionString);
 
-            this.client = new CloudTableClient(storageAccount.TableStorageUri, storageAccount.Credentials);
+            this.client = storageAccount.CreateCloudTableClient();
 
             this.mapper = new ReflectionMapper(types);
         }

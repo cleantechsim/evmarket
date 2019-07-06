@@ -7,10 +7,11 @@ namespace CleanTechSim.MainPage.Models
     public class IndexModel
     {
 
-        public PreparedDataPoints EVAdoption { get; set; }
+        public PreparedDataPoints EVAdoption { get; }
         public PreparedDataPoints BatteryCost { get; }
+        public PreparedDataPoints EVRange { get; }
 
-        public IndexModel(PreparedDataPoints evAdoption, PreparedDataPoints batteryCost)
+        public IndexModel(PreparedDataPoints evAdoption, PreparedDataPoints batteryCost, PreparedDataPoints evRange)
         {
             if (evAdoption == null)
             {
@@ -19,7 +20,7 @@ namespace CleanTechSim.MainPage.Models
 
             this.EVAdoption = evAdoption;
             this.BatteryCost = batteryCost;
+            this.EVRange = evRange;
         }
-
     }
 }

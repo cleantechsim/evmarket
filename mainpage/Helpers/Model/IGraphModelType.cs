@@ -6,29 +6,39 @@ using CleanTechSim.MainPage.Models;
 
 namespace CleanTechSim.MainPage.Helpers.Model
 {
-    public interface IGraphModelType<T>
+    public interface IGraphModelType<INPUT, PREPARED>
     {
         string Title { get; }
 
         DataPointFormat DataPointFormat { get; }
 
-        decimal GetDataPointX(T instance);
+        PREPARED Prepare(INPUT input);
 
-        decimal GetDataPointY(T instance);
+        int GetNumX(INPUT input, PREPARED prepared);
 
-        IEnumerable<DataSource> GetSources(T instance);
+        decimal GetDataPointX(INPUT input, PREPARED prepared, int index);
+
+        decimal GetDataPointY(INPUT input, PREPARED prepared, int index);
+
+        IEnumerable<DataSource> GetSources(INPUT input, PREPARED prepared, int index);
     }
 
-    public interface ISingleLineGraphModelType<T>
-        : IGraphModelType<T>
+    public interface ISingleLineGraphModelType<INSTANCE>
+        : ISingleLineGraphModelTypeWithPrepared<INSTANCE, object>
     {
 
     }
 
-    public interface IMultiLineGraphModelType<T, KEY>
-        : IGraphModelType<T>
+    public interface ISingleLineGraphModelTypeWithPrepared<INSTANCE, PREPARED>
+        : IGraphModelType<IEnumerable<INSTANCE>, PREPARED>
     {
-        IDictionary<KEY, List<T>> GetByDistinctKeys(IEnumerable<T> instances);
+
+    }
+
+    public interface IMultiLineGraphModelType<INSTANCE, KEY>
+        : IGraphModelType<IEnumerable<INSTANCE>, object>
+    {
+        IDictionary<KEY, List<INSTANCE>> GetByDistinctKeys(IEnumerable<INSTANCE> instances);
 
         string GetLineLabel(KEY key);
     }
