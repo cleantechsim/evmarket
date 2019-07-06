@@ -205,8 +205,8 @@ namespace CleanTechSim.MainPage.Helpers
 
         public static IGraphModelType<IEnumerable<Vehicle>, EVPerformancePrepared> EVPerformanceGraph
             = new GraphModelType<IEnumerable<Vehicle>, EVPerformancePrepared>(
+            "0-100 km/t (0-60 mph)",
             "Performance",
-            "EV 0-100 km/t new models",
 
             Encoding.YEAR,
             Encoding.NUMBER,
@@ -223,6 +223,67 @@ namespace CleanTechSim.MainPage.Helpers
                 decimal? accelleration = prepared.AveragePerformanceByYear[year];
 
                 return accelleration;
+            }
+        );
+
+        public class EVSalesPricePrepared : EVYearsPrepared
+        {
+            internal IDictionary<int, decimal?> AveragePerformanceByYear { get; }
+
+            internal EVSalesPricePrepared(IEnumerable<int> yearsSorted, IDictionary<int, decimal?> averagePerformancePerYear)
+                : base(yearsSorted)
+            {
+                this.AveragePerformanceByYear = averagePerformancePerYear;
+            }
+        }
+
+        internal static EVSalesPricePrepared ComputeAverageSalesPricePerYear(IEnumerable<Vehicle> instances)
+        {
+            List<int> sortedYears = GetDistinctSortedYearsForVehicles(instances);
+
+            // Make dictionary of average by year
+            Dictionary<int, decimal?> averageSalesPriceByYear = new Dictionary<int, decimal?>();
+
+            foreach (int year in sortedYears)
+            {
+                IEnumerable<Vehicle> yearVehiclesWithSalesPrice = from Vehicle v in instances
+                                                                  where
+                                                                         v.Year != null
+                                                                      && v.Year.Value == year
+                                                                      && v.PriceDollars.HasValue
+                                                                  select v;
+
+                averageSalesPriceByYear[year] = yearVehiclesWithSalesPrice.Any()
+                        ? Math.Round(
+                            yearVehiclesWithSalesPrice.Average(v => v.PriceDollars.Value),
+                            1,
+                            MidpointRounding.AwayFromZero)
+                        : default(decimal?);
+
+            }
+            return new EVSalesPricePrepared(sortedYears, averageSalesPriceByYear);
+        }
+
+        public static IGraphModelType<IEnumerable<Vehicle>, EVSalesPricePrepared> EVSalesPriceGraph
+            = new GraphModelType<IEnumerable<Vehicle>, EVSalesPricePrepared>(
+            "Cost",
+            "Sales price in dollars",
+
+            Encoding.YEAR,
+            Encoding.NUMBER,
+
+            instances => ComputeAverageSalesPricePerYear(instances),
+
+            (instances, prepared) => prepared.YearsSorted.Count(),
+
+            (instances, prepared, index) => prepared.YearsSorted.ElementAt(index),
+            (instances, prepared, index) =>
+            {
+                int year = prepared.YearsSorted.ElementAt(index);
+
+                decimal? price = prepared.AveragePerformanceByYear[year];
+
+                return price;
             }
         );
     }
