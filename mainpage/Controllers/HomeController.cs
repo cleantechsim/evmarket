@@ -12,7 +12,7 @@ using CleanTechSim.MainPage.Helpers.Storage.AzureTableStorage;
 using CleanTechSim.MainPage.Models.Helper.ClientGraph;
 using CleanTechSim.MainPage.Models.Helper.GraphData;
 
-namespace mainpage.Controllers
+namespace CleanTechSim.MainPage.Controllers
 {
     public class HomeController : Controller
     {
