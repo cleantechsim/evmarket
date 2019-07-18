@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Generic;
 
-namespace CleanTechSim.MainPage.Models
+using CleanTechSim.MainPage.Models.Helper.GraphData;
+
+namespace CleanTechSim.MainPage.Models.Helper.ClientGraph
 {
     public class DataSet
     {

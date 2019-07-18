@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using NUnit.Framework;
 
-namespace CleanTechSim.MainPage.Models.Persistent
+namespace CleanTechSim.MainPage.Models.Domain
 {
 
     public class VehicleTest

@@ -3,7 +3,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace CleanTechSim.MainPage.Models
+namespace CleanTechSim.MainPage.Models.Helper.GraphData
 {
     public class DataPoint
     {

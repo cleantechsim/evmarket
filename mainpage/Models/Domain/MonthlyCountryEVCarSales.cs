@@ -1,7 +1,7 @@
 
 using CleanTechSim.MainPage.Helpers.Storage.AzureTableStorage;
 
-namespace CleanTechSim.MainPage.Models.Persistent
+namespace CleanTechSim.MainPage.Models.Domain
 {
 
     public class MonthlyCountryEVCarSales : BasePersistentModel

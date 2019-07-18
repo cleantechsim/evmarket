@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using CleanTechSim.MainPage.Models;
-using CleanTechSim.MainPage.Models.Persistent;
+using CleanTechSim.MainPage.Models.Domain;
 
-namespace CleanTechSim.MainPage.Helpers.Model
+namespace CleanTechSim.MainPage.Models.Helper.GraphData.Prepare
 {
     public delegate KEY GetKey<T, KEY>(T instance);
 

@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using NUnit.Framework;
 
-using CleanTechSim.MainPage.Models;
+using CleanTechSim.MainPage.Models.Helper.ClientGraph;
+using CleanTechSim.MainPage.Models.Helper.GraphData;
 using CleanTechSim.MainPage.Helpers;
 
 namespace CleanTechSim.MainPage.Models

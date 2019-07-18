@@ -1,5 +1,5 @@
 
-namespace CleanTechSim.MainPage.Models
+namespace CleanTechSim.MainPage.Models.Helper.GraphData
 {
     public enum Encoding
     {

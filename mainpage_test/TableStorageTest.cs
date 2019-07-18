@@ -4,7 +4,7 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
 
-using CleanTechSim.MainPage.Models.Persistent;
+using CleanTechSim.MainPage.Models.Domain;
 
 using Microsoft.Azure.Cosmos.Table;
 

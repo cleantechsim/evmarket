@@ -1,6 +1,8 @@
 
 using System;
 
+using CleanTechSim.MainPage.Models.Helper.ClientGraph;
+
 namespace CleanTechSim.MainPage.Models
 {
 

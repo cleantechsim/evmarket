@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using CleanTechSim.MainPage.Models;
-using CleanTechSim.MainPage.Models.Persistent;
-using CleanTechSim.MainPage.Helpers;
-using CleanTechSim.MainPage.Helpers.Model;
+using CleanTechSim.MainPage.Models.Domain;
+using CleanTechSim.MainPage.Models.Helper.GraphData.Prepare;
 using CleanTechSim.MainPage.Helpers.Storage;
 using CleanTechSim.MainPage.Helpers.Storage.AzureTableStorage;
+
+using CleanTechSim.MainPage.Models.Helper.ClientGraph;
+using CleanTechSim.MainPage.Models.Helper.GraphData;
 
 namespace mainpage.Controllers
 {

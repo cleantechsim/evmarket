@@ -3,11 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using CleanTechSim.MainPage.Models;
-using CleanTechSim.MainPage.Models.Persistent;
-using CleanTechSim.MainPage.Helpers.Model;
+using CleanTechSim.MainPage.Models.Domain;
 
-namespace CleanTechSim.MainPage.Helpers
+namespace CleanTechSim.MainPage.Models.Helper.GraphData.Prepare
 {
     public class StaticData
     {

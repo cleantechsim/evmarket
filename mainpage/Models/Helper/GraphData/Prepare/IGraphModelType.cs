@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 using CleanTechSim.MainPage.Models;
 
-namespace CleanTechSim.MainPage.Helpers.Model
+namespace CleanTechSim.MainPage.Models.Helper.GraphData.Prepare
 {
     public interface IGraphModelType<INPUT, PREPARED>
     {
