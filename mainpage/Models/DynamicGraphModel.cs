@@ -1,5 +1,6 @@
 
 using System;
+using CleanTechSim.MainPage.Models.Helper.GraphData.Prepare;
 
 namespace CleanTechSim.MainPage.Models
 {
@@ -8,8 +9,8 @@ namespace CleanTechSim.MainPage.Models
         public string AjaxUri { get; }
 
         public decimal Median { get; }
-        public decimal Dispersion { get; }
-        public decimal Skew { get; }
+        public Range Dispersion { get; }
+        public Range Skew { get; }
 
         public DynamicGraphModel(
             string graphId,
@@ -17,8 +18,8 @@ namespace CleanTechSim.MainPage.Models
             string subTitle,
             string ajaxUri,
             decimal median,
-            decimal dispersion,
-            decimal skew)
+            Range dispersion,
+            Range skew)
             : base(graphId, title, subTitle)
         {
             if (ajaxUri == null)

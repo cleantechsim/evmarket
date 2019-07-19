@@ -2,7 +2,7 @@
 @using CleanTechSim.MainPage.Models
 @model DynamicGraphModel
 
-@{  
+@{
     string divElementId = Model.GraphId;
     string canvasElementId = Model.GraphId + "Canvas";
     string medianInputElementId = Model.GraphId + "MedianInput";
@@ -27,11 +27,25 @@
         </div>
         <div class="dynamic-graph-input-row">
             <span class="dynamic-graph-label">Dispersion</span>
-            <input id="@dispersionInputElementId" type="range" value="@Model.Dispersion" min="0" max="1.5" step="0.05" class="dynamic-graph-input">
+            <input
+                    id="@dispersionInputElementId"
+                    type="range"
+                    value="@Model.Dispersion.Initial"
+                    min="@Model.Dispersion.Min"
+                    max="@Model.Dispersion.Max"
+                    step="@Model.Dispersion.Step"
+                    class="dynamic-graph-input">
         </div>
         <div class="dynamic-graph-input-row">
             <span class="dynamic-graph-label">Skew</span>
-            <input id="@skewInputElementId" type="range" value="@Model.Skew" min="-30" max="30" step="0.5" class="dynamic-graph-input">
+            <input
+                    id="@skewInputElementId"
+                    type="range"
+                    value="@Model.Skew.Initial"
+                    min="@Model.Skew.Min"
+                    max="@Model.Skew.Max"
+                    step="@Model.Skew.Step" 
+                    class="dynamic-graph-input">
         </div>
     </div>
 

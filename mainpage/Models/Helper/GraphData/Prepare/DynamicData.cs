@@ -11,6 +11,21 @@ using Accord.Statistics.Distributions.Univariate;
 [assembly: InternalsVisibleTo("mainpage_test")]
 namespace CleanTechSim.MainPage.Models.Helper.GraphData.Prepare
 {
+    public class Range
+    {
+        public decimal Min { get; }
+        public decimal Initial { get; }
+        public decimal Max { get; }
+        public decimal Step { get; }
+
+        public Range(decimal min, decimal initial, decimal max, decimal step)
+        {
+            this.Min = min;
+            this.Initial = initial;
+            this.Max = max;
+            this.Step = step;
+        }
+    }
 
     public class DynamicGraph
     {
@@ -26,15 +41,15 @@ namespace CleanTechSim.MainPage.Models.Helper.GraphData.Prepare
 
         public decimal SuggestedMaxY { get; }
 
-        public decimal Dispersion { get; }
-        public decimal Skew { get; }
+        public Range Dispersion { get; }
+        public Range Skew { get; }
 
         public DynamicGraph(
             string title, string subTitle,
             decimal median, decimal minMedianInput, decimal maxMedianInput,
             decimal suggestedMaxY,
             decimal maxGraphXAxisTimesMedian,
-            decimal dispersion, decimal skew)
+            Range dispersion, Range skew)
         {
             this.Title = title;
             this.SubTitle = subTitle;
@@ -245,6 +260,9 @@ namespace CleanTechSim.MainPage.Models.Helper.GraphData.Prepare
 
     public class DynamicData
     {
+        private static Range DISPERSION_DEFAULT = new Range(0, 0.75m, 1.5m, 0.05m);
+        private static Range SKEW_DEFAULT = new Range(-30, 0, 30, 0.5m);
+
         public static DynamicGraph IncomeGraph = new DynamicGraph(
                     "Income",
                     "Income distribution",
@@ -253,8 +271,8 @@ namespace CleanTechSim.MainPage.Models.Helper.GraphData.Prepare
                     100000m,
                     10.0m,
                     3.0m,
-                    0.75m,
-                    0m);
+                    DISPERSION_DEFAULT,
+                    SKEW_DEFAULT);
 
         public static DynamicGraph RangeRequirementGraph = new DynamicGraph(
                     "Range",
@@ -264,8 +282,8 @@ namespace CleanTechSim.MainPage.Models.Helper.GraphData.Prepare
                     1000m,
                     15.0m,
                     3.0m,
-                    0.75m,
-                    0m);
+                    DISPERSION_DEFAULT,
+                    SKEW_DEFAULT);
 
 
     }
