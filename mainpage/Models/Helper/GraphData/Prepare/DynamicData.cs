@@ -144,6 +144,8 @@ namespace CleanTechSim.MainPage.Models.Helper.GraphData.Prepare
         {
             decimal location;
 
+            decimal acceptableRange = median / 50;
+
             if (skew == 0)
             {
                 location = median;
@@ -161,7 +163,7 @@ namespace CleanTechSim.MainPage.Models.Helper.GraphData.Prepare
                     decimal distMedian = (decimal)distribution.Median;
 
                     int cmp;
-                    if (Math.Abs(distMedian - median) < 500)
+                    if (Math.Abs(distMedian - median) < acceptableRange)
                     {
                         cmp = 0;
 
@@ -194,8 +196,6 @@ namespace CleanTechSim.MainPage.Models.Helper.GraphData.Prepare
                 (double)(median * dispersion),
                 (double)skew);
 
-
-            Console.WriteLine("## mean " + distribution.Mean + ", median " + distribution.Median);
 
             int numIntervals;
 
@@ -255,6 +255,18 @@ namespace CleanTechSim.MainPage.Models.Helper.GraphData.Prepare
                     3.0m,
                     0.75m,
                     0m);
+
+        public static DynamicGraph RangeRequirementGraph = new DynamicGraph(
+                    "Range",
+                    "Requirement for range",
+                    250m,
+                    50m,
+                    1000m,
+                    15.0m,
+                    3.0m,
+                    0.75m,
+                    0m);
+
 
     }
 }

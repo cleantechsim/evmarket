@@ -3,10 +3,8 @@ using System;
 
 namespace CleanTechSim.MainPage.Models
 {
-
     public class IndexModel
     {
-
         public StaticGraphModel EVAdoption { get; }
         public StaticGraphModel BatteryCost { get; }
         public StaticGraphModel EVRange { get; }
@@ -15,6 +13,7 @@ namespace CleanTechSim.MainPage.Models
         public StaticGraphModel EVSalesPrice { get; }
 
         public DynamicGraphModel Income { get; }
+        public DynamicGraphModel RangeRequirement { get; }
 
         public IndexModel(
             StaticGraphModel evAdoption,
@@ -24,7 +23,8 @@ namespace CleanTechSim.MainPage.Models
             StaticGraphModel evPerformance,
             StaticGraphModel evSalesPrice,
 
-            DynamicGraphModel income)
+            DynamicGraphModel income,
+            DynamicGraphModel rangeRequirement)
         {
             this.EVAdoption = evAdoption;
             this.BatteryCost = batteryCost;
@@ -34,6 +34,7 @@ namespace CleanTechSim.MainPage.Models
             this.EVSalesPrice = evSalesPrice;
 
             this.Income = income;
+            this.RangeRequirement = rangeRequirement;
         }
     }
 }

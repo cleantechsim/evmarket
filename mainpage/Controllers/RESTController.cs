@@ -32,9 +32,12 @@ namespace CleanTechSim.MainPage.Controllers
                     graph = DynamicData.IncomeGraph;
                     break;
 
+                case GraphIds.RANGE_REQUIREMENT_ID:
+                    graph = DynamicData.RangeRequirementGraph;
+                    break;
+
                 default:
                     throw new NotImplementedException();
-
             }
 
             PreparedDataPoints dataPoints = graph.GenerateDataPoints(median, dispersion, skew);

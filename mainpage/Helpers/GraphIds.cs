@@ -11,7 +11,7 @@ namespace CleanTechSim.MainPage.Helpers
         public const string EV_SALES_PRICE_ID = "evSalesPrice";
 
         public const string INCOME_ID = "income";
-        public const string COMMUTE_ID = "commute";
+        public const string RANGE_REQUIREMENT_ID = "rangeNeed";
         public const string CHARGE_WAIT_ID = "chargeWaitId";
 
     }
