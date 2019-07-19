@@ -3,6 +3,7 @@ using System;
 using System.Runtime.CompilerServices;
 using System.Linq;
 using System.Collections.Generic;
+using CleanTechSim.MainPage.Helpers;
 using CleanTechSim.MainPage.Models.Helper.ClientGraph;
 using Accord.Statistics.Distributions.Univariate;
 
@@ -139,14 +140,62 @@ namespace CleanTechSim.MainPage.Models.Helper.GraphData.Prepare
             return rounding;
         }
 
+        private static decimal FindDistributionLocation(decimal median, decimal dispersion, decimal skew)
+        {
+            decimal location;
+
+            if (skew == 0)
+            {
+                location = median;
+            }
+            else
+            {
+                Compare compare = value =>
+                {
+
+                    SkewNormalDistribution distribution = new SkewNormalDistribution(
+                        (double)value,
+                        (double)(median * dispersion),
+                        (double)skew);
+
+                    decimal distMedian = (decimal)distribution.Median;
+
+                    int cmp;
+                    if (Math.Abs(distMedian - median) < 500)
+                    {
+                        cmp = 0;
+
+                    }
+                    else if (distMedian > median)
+                    {
+                        cmp = -1;
+                    }
+                    else
+                    {
+                        cmp = 1;
+                    }
+
+                    return cmp;
+                };
+
+                location = BinarySearch.Search(0, median * 5, compare);
+            }
+
+            return location;
+        }
+
         public PreparedDataPoints GenerateDataPoints(decimal median, decimal dispersion, decimal skew)
         {
             decimal maxGraph = median * maxGraphXAxisTimesMedian;
+            decimal location = FindDistributionLocation(median, dispersion, skew);
 
             SkewNormalDistribution distribution = new SkewNormalDistribution(
-                (double)median,
+                (double)location,
                 (double)(median * dispersion),
                 (double)skew);
+
+
+            Console.WriteLine("## mean " + distribution.Mean + ", median " + distribution.Median);
 
             int numIntervals;
 
@@ -204,7 +253,7 @@ namespace CleanTechSim.MainPage.Models.Helper.GraphData.Prepare
                     100000m,
                     10.0m,
                     3.0m,
-                    0.5m,
+                    0.75m,
                     0m);
 
     }
