@@ -10,10 +10,12 @@ namespace CleanTechSim.MainPage.Models.Helper.GraphData.Prepare
 
     public delegate PREPARED Prepare<INPUT, PREPARED>(INPUT input);
 
+    public delegate string GetLineLabel(int line);
+
     public delegate int GetNumXFromInputAndPrepared<INPUT, PREPARED>(INPUT input, PREPARED prepared);
 
-    public delegate decimal GetXFromInputAndPrepared<INPUT, PREPARED>(INPUT input, PREPARED prepared, int index);
-    public delegate decimal? GetYFromInputAndPrepared<INPUT, PREPARED>(INPUT input, PREPARED prepared, int index);
+    public delegate decimal GetXFromInputAndPrepared<INPUT, PREPARED>(INPUT input, PREPARED prepared, int line, int index);
+    public delegate decimal? GetYFromInputAndPrepared<INPUT, PREPARED>(INPUT input, PREPARED prepared, int line, int index);
 
     public delegate string GetLabel<KEY>(KEY key);
 
@@ -23,6 +25,8 @@ namespace CleanTechSim.MainPage.Models.Helper.GraphData.Prepare
 
         private readonly Prepare<INPUT, PREPARED> prepare;
 
+        private readonly GetLineLabel getLineLabel;
+
         private readonly GetNumXFromInputAndPrepared<INPUT, PREPARED> getNumX;
         private readonly GetXFromInputAndPrepared<INPUT, PREPARED> getX;
         private readonly GetYFromInputAndPrepared<INPUT, PREPARED> getY;
@@ -30,6 +34,7 @@ namespace CleanTechSim.MainPage.Models.Helper.GraphData.Prepare
         public string Title { get; }
         public string SubTitle { get; }
         public DataPointFormat DataPointFormat { get; }
+        public int NumLines { get; }
 
 
         public GraphModelType(
@@ -39,7 +44,11 @@ namespace CleanTechSim.MainPage.Models.Helper.GraphData.Prepare
             Encoding xEncoding,
             Encoding yEncoding,
 
+            int numLines,
+
             Prepare<INPUT, PREPARED> prepare,
+
+            GetLineLabel getLineLabel,
 
             GetNumXFromInputAndPrepared<INPUT, PREPARED> getNumX,
             GetXFromInputAndPrepared<INPUT, PREPARED> getX,
@@ -51,7 +60,11 @@ namespace CleanTechSim.MainPage.Models.Helper.GraphData.Prepare
 
             this.DataPointFormat = new DataPointFormat(xEncoding, yEncoding);
 
+            this.NumLines = numLines;
+
             this.prepare = prepare;
+
+            this.getLineLabel = getLineLabel;
 
             this.getNumX = getNumX;
             this.getX = getX;
@@ -63,19 +76,24 @@ namespace CleanTechSim.MainPage.Models.Helper.GraphData.Prepare
             return prepare != null ? prepare.Invoke(input) : default(PREPARED);
         }
 
+        public string GetLineLabel(int line)
+        {
+            return getLineLabel != null ? getLineLabel.Invoke(line) : null;
+        }
+
         public int GetNumX(INPUT input, PREPARED prepared)
         {
             return getNumX.Invoke(input, prepared);
         }
 
-        public decimal GetDataPointX(INPUT input, PREPARED prepared, int index)
+        public decimal GetDataPointX(INPUT input, PREPARED prepared, int line, int index)
         {
-            return getX.Invoke(input, prepared, index);
+            return getX.Invoke(input, prepared, line, index);
         }
 
-        public decimal? GetDataPointY(INPUT input, PREPARED prepared, int index)
+        public decimal? GetDataPointY(INPUT input, PREPARED prepared, int line, int index)
         {
-            return getY.Invoke(input, prepared, index);
+            return getY.Invoke(input, prepared, line, index);
         }
 
         public virtual IEnumerable<DataSource> GetSources(INPUT input, PREPARED prepared, int index)
@@ -108,10 +126,12 @@ namespace CleanTechSim.MainPage.Models.Helper.GraphData.Prepare
 
             xEncoding,
             yEncoding,
+            1,
+            null,
             null,
             (input, prepared) => input.Count(),
-            (input, prepared, index) => getX.Invoke(input.ElementAt(index)),
-            (input, prepared, index) => getY.Invoke(input.ElementAt(index)))
+            (input, prepared, line, index) => getX.Invoke(input.ElementAt(index)),
+            (input, prepared, line, index) => getY.Invoke(input.ElementAt(index)))
         {
 
         }
@@ -147,7 +167,7 @@ namespace CleanTechSim.MainPage.Models.Helper.GraphData.Prepare
                 yEncoding,
                 instances => null,
                 getX,
-                (input, prepared, index) => getY.Invoke(input.ElementAt(index)))
+                (input, prepared, line, index) => getY.Invoke(input.ElementAt(index)))
         {
 
         }
@@ -174,9 +194,11 @@ namespace CleanTechSim.MainPage.Models.Helper.GraphData.Prepare
                 subTitle,
                 xEncoding,
                 yEncoding,
+                1,
                 prepare,
+                null,
                 (input, prepared) => input.Count(),
-                (input, prepared, index) => getX.Invoke(input.ElementAt(index)),
+                (input, prepared, line, index) => getX.Invoke(input.ElementAt(index)),
                 getY)
         {
         }
@@ -187,14 +209,14 @@ namespace CleanTechSim.MainPage.Models.Helper.GraphData.Prepare
         }
     }
 
-    public class MultiLineGraphModelType<INSTANCE, KEY>
+    public class MultiLineKeyedGraphModelType<INSTANCE, KEY>
         : InstanceGraphModelType<INSTANCE, object>,
         IMultiLineGraphModelType<INSTANCE, KEY> where INSTANCE : BasePersistentModel
     {
         private readonly GetKey<INSTANCE, KEY> getKey;
         private readonly GetLabel<KEY> getLabel;
 
-        public MultiLineGraphModelType(
+        public MultiLineKeyedGraphModelType(
             string title,
             string subTitle,
             Encoding xEncoding,

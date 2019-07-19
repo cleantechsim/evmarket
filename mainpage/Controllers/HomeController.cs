@@ -32,7 +32,7 @@ namespace CleanTechSim.MainPage.Controllers
                 typeof(Vehicle));
         }
 
-        private DataSeries GetDataSeries<T, PREPARED>(IEnumerable<T> lineElements, IGraphModelType<IEnumerable<T>, PREPARED> graphModelType)
+        private DataSeries GetDataSeries<T, PREPARED>(IEnumerable<T> lineElements, IGraphModelType<IEnumerable<T>, PREPARED> graphModelType, int lineNo)
         {
 
             PREPARED prepared = graphModelType.Prepare(lineElements);
@@ -45,8 +45,8 @@ namespace CleanTechSim.MainPage.Controllers
                 T lineElement = lineElements.ElementAt(i);
 
                 DataPoint dataPoint = new DataPoint(
-                    graphModelType.GetDataPointX(lineElements, prepared, i),
-                    graphModelType.GetDataPointY(lineElements, prepared, i),
+                    graphModelType.GetDataPointX(lineElements, prepared, lineNo, i),
+                    graphModelType.GetDataPointY(lineElements, prepared, lineNo, i),
                     graphModelType.GetSources(lineElements, prepared, i)
                 );
 
@@ -62,13 +62,40 @@ namespace CleanTechSim.MainPage.Controllers
         {
             IEnumerable<INSTANCE> elements = storage.GetAll<INSTANCE>(type);
 
-            DataSeries dataSeries = GetDataSeries<INSTANCE, PREPARED>(elements, graphModelType);
+            DataSeries dataSeries = GetDataSeries<INSTANCE, PREPARED>(elements, graphModelType, 0);
 
             return new LineGraph(
                 graphModelType.Title,
                 graphModelType.SubTitle,
                 graphModelType.DataPointFormat,
                 new Line[] { new Line(null, Color.Green, dataSeries) });
+        }
+
+        private LineGraph GetAllMultiLine<INSTANCE, PREPARED>(Type type, IGraphModelType<IEnumerable<INSTANCE>, PREPARED> graphModelType)
+        {
+            IEnumerable<INSTANCE> elements = storage.GetAll<INSTANCE>(type);
+
+            Line[] lines = new Line[graphModelType.NumLines];
+
+            for (int lineNo = 0; lineNo < graphModelType.NumLines; ++lineNo)
+            {
+                DataSeries dataSeries = GetDataSeries<INSTANCE, PREPARED>(elements, graphModelType, lineNo);
+
+                string lineLabel = graphModelType.GetLineLabel(lineNo);
+
+                lines[lineNo] = new Line(lineLabel, ColorForLine(lineNo), dataSeries);
+            }
+
+            return new LineGraph(
+                graphModelType.Title,
+                graphModelType.SubTitle,
+                graphModelType.DataPointFormat,
+                lines);
+        }
+
+        private static Color ColorForLine(int lineNo)
+        {
+            return Color.Colors.ElementAt(lineNo);
         }
 
         private LineGraph GetAllMultiLine<T, KEY>(Type type, IMultiLineGraphModelType<T, KEY> graphModelType)
@@ -82,7 +109,7 @@ namespace CleanTechSim.MainPage.Controllers
 
             foreach (KEY key in dictionary.Keys)
             {
-                DataSeries dataSeries = GetDataSeries(dictionary[key], graphModelType);
+                DataSeries dataSeries = GetDataSeries(dictionary[key], graphModelType, lineInfos.Count());
 
                 LineInfo lineInfo = new LineInfo(graphModelType.GetLineLabel(key), dataSeries);
 
@@ -101,7 +128,7 @@ namespace CleanTechSim.MainPage.Controllers
                 LineInfo lineInfo = lineInfos.ElementAt(i);
                 Line line = new Line(
                     lineInfo.Label,
-                    Color.Colors.ElementAt(i),
+                    ColorForLine(i),
                     lineInfo.DataSeries
                 );
 
@@ -150,7 +177,7 @@ namespace CleanTechSim.MainPage.Controllers
 
                 VerifyAndComputeStaticModel(
                     GraphIds.EV_RANGE_ID,
-                    GetAllSingleLine(typeof(Vehicle), StaticData.EVRangeGraph)),
+                    GetAllMultiLine(typeof(Vehicle), StaticData.EVRangeGraph)),
 
                 VerifyAndComputeStaticModel(
                     GraphIds.EV_CHOICE_ID,
@@ -162,7 +189,7 @@ namespace CleanTechSim.MainPage.Controllers
 
                 VerifyAndComputeStaticModel(
                     GraphIds.EV_SALES_PRICE_ID,
-                    GetAllSingleLine(typeof(Vehicle), StaticData.EVSalesPriceGraph)),
+                    GetAllMultiLine(typeof(Vehicle), StaticData.EVSalesPriceGraph)),
 
                 MakeDynamicModel(
                     GraphIds.INCOME_ID,

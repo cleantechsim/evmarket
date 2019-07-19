@@ -14,13 +14,17 @@ namespace CleanTechSim.MainPage.Models.Helper.GraphData.Prepare
 
         DataPointFormat DataPointFormat { get; }
 
+        int NumLines { get; }
+
         PREPARED Prepare(INPUT input);
 
         int GetNumX(INPUT input, PREPARED prepared);
 
-        decimal GetDataPointX(INPUT input, PREPARED prepared, int index);
+        string GetLineLabel(int line);
 
-        decimal? GetDataPointY(INPUT input, PREPARED prepared, int index);
+        decimal GetDataPointX(INPUT input, PREPARED prepared, int line, int index);
+
+        decimal? GetDataPointY(INPUT input, PREPARED prepared, int line, int index);
 
         IEnumerable<DataSource> GetSources(INPUT input, PREPARED prepared, int index);
     }

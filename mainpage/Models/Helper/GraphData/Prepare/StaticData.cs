@@ -3,13 +3,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using CleanTechSim.MainPage.Helpers;
 using CleanTechSim.MainPage.Models.Domain;
 
 namespace CleanTechSim.MainPage.Models.Helper.GraphData.Prepare
 {
     public class StaticData
     {
-        public static IMultiLineGraphModelType<MonthlyCountryEVCarSales, string> EvAdoptionGraph = new MultiLineGraphModelType<MonthlyCountryEVCarSales, string>(
+        public static IMultiLineGraphModelType<MonthlyCountryEVCarSales, string> EvAdoptionGraph = new MultiLineKeyedGraphModelType<MonthlyCountryEVCarSales, string>(
             "Awareness",
             "EV percent marketshare by month",
 
@@ -67,21 +68,25 @@ namespace CleanTechSim.MainPage.Models.Helper.GraphData.Prepare
         public class EVRangePrepared : EVYearsPrepared
         {
             internal IDictionary<int, int> AverageRangeByYear { get; }
+            internal IDictionary<int, int> MedianRangeByYear { get; }
 
-            internal EVRangePrepared(IEnumerable<int> yearsSorted, IDictionary<int, int> averageRangePerYear)
+            internal EVRangePrepared(IEnumerable<int> yearsSorted, IDictionary<int, int> averageRangePerYear, IDictionary<int, int> medianRangePerYear)
                 : base(yearsSorted)
             {
                 this.AverageRangeByYear = averageRangePerYear;
+                this.MedianRangeByYear = medianRangePerYear;
             }
         }
 
-        internal static EVRangePrepared ComputeAverageRangePerYear(IEnumerable<Vehicle> instances)
+
+        internal static EVRangePrepared ComputeAverageAndMedianRangePerYear(IEnumerable<Vehicle> instances)
         {
             Dictionary<Vehicle, int> wltpForCar = Vehicle.ComputeVehicleToWLTPRange(instances);
             List<int> sortedYears = GetDistinctSortedYearsForVehicles(instances);
 
             // Make dictionary of average by year
             Dictionary<int, int> averageRangeByYear = new Dictionary<int, int>();
+            Dictionary<int, int> medianRangeByYear = new Dictionary<int, int>();
 
             foreach (int year in sortedYears)
             {
@@ -94,9 +99,13 @@ namespace CleanTechSim.MainPage.Models.Helper.GraphData.Prepare
                 averageRangeByYear[year] = (int)(from Vehicle v in yearVehicles
                                                  where wltpForCar.ContainsKey(v)
                                                  select wltpForCar[v]).Average();
+
+                medianRangeByYear[year] = (int)(from Vehicle v in yearVehicles
+                                                where wltpForCar.ContainsKey(v)
+                                                select wltpForCar[v]).Median();
             }
 
-            return new EVRangePrepared(sortedYears, averageRangeByYear);
+            return new EVRangePrepared(sortedYears, averageRangeByYear, medianRangeByYear);
         }
 
         public static IGraphModelType<IEnumerable<Vehicle>, EVRangePrepared> EVRangeGraph
@@ -107,12 +116,23 @@ namespace CleanTechSim.MainPage.Models.Helper.GraphData.Prepare
             Encoding.YEAR,
             Encoding.NUMBER,
 
-            instances => ComputeAverageRangePerYear(instances),
+            2,
+
+            instances => ComputeAverageAndMedianRangePerYear(instances),
+
+            line => line == 0 ? "Average" : "Median",
 
             (instances, prepared) => prepared.YearsSorted.Count(),
 
-            (instances, prepared, index) => prepared.YearsSorted.ElementAt(index),
-            (instances, prepared, index) => prepared.AverageRangeByYear[prepared.YearsSorted.ElementAt(index)]
+            (instances, prepared, line, index) => prepared.YearsSorted.ElementAt(index),
+            (instances, prepared, line, index) =>
+            {
+                int year = prepared.YearsSorted.ElementAt(index);
+
+                return line == 0
+                    ? prepared.AverageRangeByYear[year]
+                    : prepared.MedianRangeByYear[year];
+            }
         );
 
         public class EVChoicePrepared : EVYearsPrepared
@@ -154,12 +174,16 @@ namespace CleanTechSim.MainPage.Models.Helper.GraphData.Prepare
             Encoding.YEAR,
             Encoding.INTEGER,
 
+            1,
+
             instances => ComputeNumberOfNewModelsPerYear(instances),
+
+            null,
 
             (instances, prepared) => prepared.YearsSorted.Count(),
 
-            (instances, prepared, index) => prepared.YearsSorted.ElementAt(index),
-            (instances, prepared, index) => prepared.NumberOfNewModelsByYear[prepared.YearsSorted.ElementAt(index)]
+            (instances, prepared, line, index) => prepared.YearsSorted.ElementAt(index),
+            (instances, prepared, line, index) => prepared.NumberOfNewModelsByYear[prepared.YearsSorted.ElementAt(index)]
         );
 
 
@@ -209,12 +233,16 @@ namespace CleanTechSim.MainPage.Models.Helper.GraphData.Prepare
             Encoding.YEAR,
             Encoding.NUMBER,
 
+            1,
+
             instances => ComputeAveragePerformancePerYear(instances),
+
+            null,
 
             (instances, prepared) => prepared.YearsSorted.Count(),
 
-            (instances, prepared, index) => prepared.YearsSorted.ElementAt(index),
-            (instances, prepared, index) =>
+            (instances, prepared, line, index) => prepared.YearsSorted.ElementAt(index),
+            (instances, prepared, line, index) =>
             {
                 int year = prepared.YearsSorted.ElementAt(index);
 
@@ -226,12 +254,17 @@ namespace CleanTechSim.MainPage.Models.Helper.GraphData.Prepare
 
         public class EVSalesPricePrepared : EVYearsPrepared
         {
-            internal IDictionary<int, decimal?> AveragePerformanceByYear { get; }
+            internal IDictionary<int, decimal?> AveragePriceByYear { get; }
+            internal IDictionary<int, decimal?> MedianPriceByYear { get; }
 
-            internal EVSalesPricePrepared(IEnumerable<int> yearsSorted, IDictionary<int, decimal?> averagePerformancePerYear)
+            internal EVSalesPricePrepared(
+                IEnumerable<int> yearsSorted,
+                IDictionary<int, decimal?> averagePricePerYear,
+                IDictionary<int, decimal?> medianPricePerYear)
                 : base(yearsSorted)
             {
-                this.AveragePerformanceByYear = averagePerformancePerYear;
+                this.AveragePriceByYear = averagePricePerYear;
+                this.MedianPriceByYear = medianPricePerYear;
             }
         }
 
@@ -241,6 +274,7 @@ namespace CleanTechSim.MainPage.Models.Helper.GraphData.Prepare
 
             // Make dictionary of average by year
             Dictionary<int, decimal?> averageSalesPriceByYear = new Dictionary<int, decimal?>();
+            Dictionary<int, decimal?> medianSalesPriceByYear = new Dictionary<int, decimal?>();
 
             foreach (int year in sortedYears)
             {
@@ -258,8 +292,15 @@ namespace CleanTechSim.MainPage.Models.Helper.GraphData.Prepare
                             MidpointRounding.AwayFromZero)
                         : default(decimal?);
 
+                medianSalesPriceByYear[year] = yearVehiclesWithSalesPrice.Any()
+                        ? Math.Round(
+                            yearVehiclesWithSalesPrice.Median(v => v.PriceDollars.Value),
+                            1,
+                            MidpointRounding.AwayFromZero)
+                        : default(decimal?);
+
             }
-            return new EVSalesPricePrepared(sortedYears, averageSalesPriceByYear);
+            return new EVSalesPricePrepared(sortedYears, averageSalesPriceByYear, medianSalesPriceByYear);
         }
 
         public static IGraphModelType<IEnumerable<Vehicle>, EVSalesPricePrepared> EVSalesPriceGraph
@@ -270,19 +311,26 @@ namespace CleanTechSim.MainPage.Models.Helper.GraphData.Prepare
             Encoding.YEAR,
             Encoding.NUMBER,
 
+            2,
+
             instances => ComputeAverageSalesPricePerYear(instances),
+
+            line => line == 0 ? "Average" : "Median",
 
             (instances, prepared) => prepared.YearsSorted.Count(),
 
-            (instances, prepared, index) => prepared.YearsSorted.ElementAt(index),
-            (instances, prepared, index) =>
+            (instances, prepared, line, index) => prepared.YearsSorted.ElementAt(index),
+            (instances, prepared, line, index) =>
             {
                 int year = prepared.YearsSorted.ElementAt(index);
 
-                decimal? price = prepared.AveragePerformanceByYear[year];
+                decimal? price = line == 0
+                    ? prepared.AveragePriceByYear[year]
+                    : prepared.MedianPriceByYear[year];
 
                 return price;
             }
         );
     }
 }
+
