@@ -48,7 +48,6 @@ namespace CleanTechSim.MainPage.Models
 
 
             PreparedDataPoints dataPoints = PreparedDataPoints.VerifyAndCompute(
-                "evAdoption",
                 new LineGraph(
                     "Test lines",
                     "Subtitle",

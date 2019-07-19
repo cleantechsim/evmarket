@@ -14,6 +14,8 @@
         The purpose of this page is to visualize in a simple way the trends in the clean tech market and how far one is from
         reaching critical mass.<br/>
 
+        <!--
+
         NOTE: This is from a layman's perspective, the author is not an economist.<br/>
         
         Simulation bases itself on EVs being a superior product, all else being equal
@@ -21,17 +23,24 @@
         
         Given the above, EV sales rates should as technology advances, mainly be hindered by awareness (until reaches critical mass) and by supply (eg. batteries)
         Otherwise the switch will be like for flipphones to smartphones, everyone chooses the superior alternative.
+        -->
 
     </p>
 
     <h2 id="main-barriers">Barriers</h2>
     <div id="barrier-graphs">
-        @{ await Html.RenderPartialAsync("_LineGraphPartial", Model.EVAdoption); }
-        @{ await Html.RenderPartialAsync("_LineGraphPartial", Model.BatteryCost); }
-        @{ await Html.RenderPartialAsync("_LineGraphPartial", Model.EVRange); }
-        @{ await Html.RenderPartialAsync("_LineGraphPartial", Model.EVChoice); }
-        @{ await Html.RenderPartialAsync("_LineGraphPartial", Model.EVPerformance); }
-        @{ await Html.RenderPartialAsync("_LineGraphPartial", Model.EVSalesPrice); }
+        @{ await Html.RenderPartialAsync("_LineGraphStaticPartial", Model.EVAdoption); }
+        @{ await Html.RenderPartialAsync("_LineGraphStaticPartial", Model.EVRange); }
+        @{ await Html.RenderPartialAsync("_LineGraphStaticPartial", Model.EVChoice); }
+        @{ await Html.RenderPartialAsync("_LineGraphStaticPartial", Model.EVSalesPrice); }
+
+        <!--
+        @{ await Html.RenderPartialAsync("_LineGraphStaticPartial", Model.BatteryCost); }
+        @{ await Html.RenderPartialAsync("_LineGraphStaticPartial", Model.EVPerformance); }
+        -->
+
+        @{ await Html.RenderPartialAsync("_LineGraphDynamicPartial", Model.Income); }
+
     </div>
 </div>
 

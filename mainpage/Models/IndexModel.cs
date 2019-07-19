@@ -1,28 +1,30 @@
 
 using System;
 
-using CleanTechSim.MainPage.Models.Helper.ClientGraph;
-
 namespace CleanTechSim.MainPage.Models
 {
 
     public class IndexModel
     {
 
-        public PreparedDataPoints EVAdoption { get; }
-        public PreparedDataPoints BatteryCost { get; }
-        public PreparedDataPoints EVRange { get; }
-        public PreparedDataPoints EVChoice { get; }
-        public PreparedDataPoints EVPerformance { get; }
-        public PreparedDataPoints EVSalesPrice { get; }
+        public StaticGraphModel EVAdoption { get; }
+        public StaticGraphModel BatteryCost { get; }
+        public StaticGraphModel EVRange { get; }
+        public StaticGraphModel EVChoice { get; }
+        public StaticGraphModel EVPerformance { get; }
+        public StaticGraphModel EVSalesPrice { get; }
+
+        public DynamicGraphModel Income { get; }
 
         public IndexModel(
-            PreparedDataPoints evAdoption,
-            PreparedDataPoints batteryCost,
-            PreparedDataPoints evRange,
-            PreparedDataPoints evChoice,
-            PreparedDataPoints evPerformance,
-            PreparedDataPoints evSalesPrice)
+            StaticGraphModel evAdoption,
+            StaticGraphModel batteryCost,
+            StaticGraphModel evRange,
+            StaticGraphModel evChoice,
+            StaticGraphModel evPerformance,
+            StaticGraphModel evSalesPrice,
+
+            DynamicGraphModel income)
         {
             this.EVAdoption = evAdoption;
             this.BatteryCost = batteryCost;
@@ -30,6 +32,8 @@ namespace CleanTechSim.MainPage.Models
             this.EVChoice = evChoice;
             this.EVPerformance = evPerformance;
             this.EVSalesPrice = evSalesPrice;
+
+            this.Income = income;
         }
     }
 }

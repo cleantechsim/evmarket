@@ -12,16 +12,12 @@ using CleanTechSim.MainPage.Helpers.Storage.AzureTableStorage;
 using CleanTechSim.MainPage.Models.Helper.ClientGraph;
 using CleanTechSim.MainPage.Models.Helper.GraphData;
 
+using CleanTechSim.MainPage.Helpers;
+
 namespace CleanTechSim.MainPage.Controllers
 {
     public class HomeController : Controller
     {
-        public const string EV_ADOPTION_ID = "evAdoption";
-        public const string BATTERY_COST_ID = "batteryCost";
-        public const string EV_RANGE_ID = "evRange";
-        public const string EV_CHOICE_ID = "evChoice";
-        public const string EV_PERFORMANCE_ID = "evPerformance";
-        public const string EV_SALES_PRICE_ID = "evSalesPrice";
 
         private readonly IDataStorage storage;
 
@@ -144,32 +140,58 @@ namespace CleanTechSim.MainPage.Controllers
         public IActionResult Index()
         {
             IndexModel model = new IndexModel(
-                PreparedDataPoints.VerifyAndCompute(
-                    EV_ADOPTION_ID,
+                VerifyAndComputeStaticModel(
+                    GraphIds.EV_ADOPTION_ID,
                     GetAllMultiLine(typeof(MonthlyCountryEVCarSales), StaticData.EvAdoptionGraph)),
 
-                PreparedDataPoints.VerifyAndCompute(
-                    BATTERY_COST_ID,
+                VerifyAndComputeStaticModel(
+                    GraphIds.BATTERY_COST_ID,
                     GetAllSingleLine(typeof(BatteryCost), StaticData.BatteryCostGraph)),
 
-                PreparedDataPoints.VerifyAndCompute(
-                    EV_RANGE_ID,
+                VerifyAndComputeStaticModel(
+                    GraphIds.EV_RANGE_ID,
                     GetAllSingleLine(typeof(Vehicle), StaticData.EVRangeGraph)),
 
-                PreparedDataPoints.VerifyAndCompute(
-                    EV_CHOICE_ID,
+                VerifyAndComputeStaticModel(
+                    GraphIds.EV_CHOICE_ID,
                     GetAllSingleLine(typeof(Vehicle), StaticData.EVChoiceGraph)),
 
-                PreparedDataPoints.VerifyAndCompute(
-                    EV_PERFORMANCE_ID,
+                VerifyAndComputeStaticModel(
+                    GraphIds.EV_PERFORMANCE_ID,
                     GetAllSingleLine(typeof(Vehicle), StaticData.EVPerformanceGraph)),
 
-                PreparedDataPoints.VerifyAndCompute(
-                    EV_SALES_PRICE_ID,
-                    GetAllSingleLine(typeof(Vehicle), StaticData.EVSalesPriceGraph))
+                VerifyAndComputeStaticModel(
+                    GraphIds.EV_SALES_PRICE_ID,
+                    GetAllSingleLine(typeof(Vehicle), StaticData.EVSalesPriceGraph)),
+
+                MakeDynamicModel(
+                    GraphIds.INCOME_ID,
+                    DynamicData.IncomeGraph
+                )
             );
 
             return View(model);
+        }
+
+        private static StaticGraphModel VerifyAndComputeStaticModel(string graphId, LineGraph lineGraph)
+        {
+            PreparedDataPoints dataPoints = PreparedDataPoints.VerifyAndCompute(lineGraph);
+
+            return new StaticGraphModel(graphId, lineGraph.Title, lineGraph.SubTitle, dataPoints);
+        }
+
+        private static DynamicGraphModel MakeDynamicModel(
+            string graphId,
+            DynamicGraph graph)
+        {
+            return new DynamicGraphModel(
+                graphId,
+                graph.Title,
+                graph.SubTitle,
+                "/REST/getData",
+                graph.Median,
+                graph.Dispersion,
+                graph.Skew);
         }
 
         public IActionResult Privacy()

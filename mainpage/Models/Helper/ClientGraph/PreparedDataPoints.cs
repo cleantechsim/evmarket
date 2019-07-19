@@ -9,18 +9,11 @@ namespace CleanTechSim.MainPage.Models.Helper.ClientGraph
 {
     public class PreparedDataPoints
     {
-        public string GraphId { get; }
-        public string Title { get; }
-        public string SubTitle { get; }
         public IEnumerable<string> Labels { get; }
         public IEnumerable<DataSet> DataSets { get; }
 
-        private PreparedDataPoints(string graphId, string title, string subTitle, List<string> labels, List<DataSet> dataSets)
+        public PreparedDataPoints(IEnumerable<string> labels, IEnumerable<DataSet> dataSets)
         {
-            if (graphId == null)
-            {
-                throw new ArgumentNullException();
-            }
 
             if (labels == null)
             {
@@ -32,11 +25,8 @@ namespace CleanTechSim.MainPage.Models.Helper.ClientGraph
                 throw new ArgumentNullException();
             }
 
-            this.GraphId = graphId;
-            this.Title = title;
-            this.SubTitle = subTitle;
-            this.Labels = labels;
-            this.DataSets = dataSets;
+            this.Labels = labels.ToArray();
+            this.DataSets = dataSets.ToArray();
         }
 
         private static HashSet<decimal> GetDistinctXValuesForAllDataSeries(IEnumerable<DataSeries> dataSeries)
@@ -126,12 +116,12 @@ namespace CleanTechSim.MainPage.Models.Helper.ClientGraph
             return labels;
         }
 
-        public static PreparedDataPoints VerifyAndCompute(string graphId, LineGraph lineGraph)
+        public static PreparedDataPoints VerifyAndCompute(LineGraph lineGraph)
         {
-            return VerifyAndCompute(graphId, lineGraph.Title, lineGraph.SubTitle, lineGraph.Lines, lineGraph.DataPointFormat);
+            return VerifyAndCompute(lineGraph.Lines, lineGraph.DataPointFormat);
         }
 
-        private static PreparedDataPoints VerifyAndCompute(string graphId, string title, string subTitle, IEnumerable<Line> graphLines, DataPointFormat format)
+        private static PreparedDataPoints VerifyAndCompute(IEnumerable<Line> graphLines, DataPointFormat format)
         {
 
             // Find the y-values and the labels for those
@@ -196,9 +186,7 @@ namespace CleanTechSim.MainPage.Models.Helper.ClientGraph
                 dataSets.Add(new DataSet(line.Label, line.Color, dataSetValues));
             }
 
-
-            return new PreparedDataPoints(graphId, title, subTitle, labels, dataSets);
-
+            return new PreparedDataPoints(labels, dataSets);
         }
     }
 }
