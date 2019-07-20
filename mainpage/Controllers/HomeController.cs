@@ -198,6 +198,10 @@ namespace CleanTechSim.MainPage.Controllers
                 MakeDynamicModel(
                     GraphIds.RANGE_REQUIREMENT_ID,
                     DynamicData.RangeRequirementGraph
+                ),
+                MakeDynamicModel(
+                    GraphIds.PROPENSITY_ID,
+                    DynamicData.PropensityGraph
                 )
             );
 

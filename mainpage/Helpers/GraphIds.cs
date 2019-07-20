@@ -12,8 +12,8 @@ namespace CleanTechSim.MainPage.Helpers
 
         public const string INCOME_ID = "income";
         public const string RANGE_REQUIREMENT_ID = "rangeNeed";
+        public const string PROPENSITY_ID = "propensity";
         public const string CHARGE_WAIT_ID = "chargeWaitId";
-
     }
 }
 

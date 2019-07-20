@@ -14,6 +14,7 @@ namespace CleanTechSim.MainPage.Models
 
         public DynamicGraphModel Income { get; }
         public DynamicGraphModel RangeRequirement { get; }
+        public DynamicGraphModel Propensity { get; }
 
         public IndexModel(
             StaticGraphModel evAdoption,
@@ -24,7 +25,8 @@ namespace CleanTechSim.MainPage.Models
             StaticGraphModel evSalesPrice,
 
             DynamicGraphModel income,
-            DynamicGraphModel rangeRequirement)
+            DynamicGraphModel rangeRequirement,
+            DynamicGraphModel propensity)
         {
             this.EVAdoption = evAdoption;
             this.BatteryCost = batteryCost;
@@ -35,6 +37,7 @@ namespace CleanTechSim.MainPage.Models
 
             this.Income = income;
             this.RangeRequirement = rangeRequirement;
+            this.Propensity = propensity;
         }
     }
 }

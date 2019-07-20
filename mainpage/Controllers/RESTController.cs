@@ -36,11 +36,15 @@ namespace CleanTechSim.MainPage.Controllers
                     graph = DynamicData.RangeRequirementGraph;
                     break;
 
+                case GraphIds.PROPENSITY_ID:
+                    graph = DynamicData.PropensityGraph;
+                    break;
+
                 default:
                     throw new NotImplementedException();
             }
 
-            PreparedDataPoints dataPoints = graph.GenerateDataPoints(median, dispersion, skew);
+            PreparedDataPoints dataPoints = graph.GenerateDataPoints(median, dispersion, skew, graph.MaxXValue);
 
             dictionary.Add("labels", dataPoints.Labels);
 

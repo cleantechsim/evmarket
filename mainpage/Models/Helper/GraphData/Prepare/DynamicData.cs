@@ -41,6 +41,8 @@ namespace CleanTechSim.MainPage.Models.Helper.GraphData.Prepare
 
         public decimal SuggestedMaxY { get; }
 
+        public decimal? MaxXValue { get; }
+
         public Range Dispersion { get; }
         public Range Skew { get; }
 
@@ -49,7 +51,8 @@ namespace CleanTechSim.MainPage.Models.Helper.GraphData.Prepare
             decimal median, decimal minMedianInput, decimal maxMedianInput,
             decimal suggestedMaxY,
             decimal maxGraphXAxisTimesMedian,
-            Range dispersion, Range skew)
+            Range dispersion, Range skew,
+            decimal? maxXValue = null)
         {
             this.Title = title;
             this.SubTitle = subTitle;
@@ -59,6 +62,7 @@ namespace CleanTechSim.MainPage.Models.Helper.GraphData.Prepare
             this.SuggestedMaxY = suggestedMaxY;
             this.Dispersion = dispersion;
             this.Skew = skew;
+            this.MaxXValue = maxXValue;
 
             if (maxGraphXAxisTimesMedian < 1)
             {
@@ -125,6 +129,17 @@ namespace CleanTechSim.MainPage.Models.Helper.GraphData.Prepare
                     result = MakeDecimal(5, digits.Count() - 1);
                 }
             }
+            else if (mostSignificantDigit == 1)
+            {
+                if (digits.Skip(1).Any(digit => digit != 0) || value != asInt)
+                {
+                    result = MakeDecimal(5, digits.Count() - 1);
+                }
+                else
+                {
+                    result = MakeDecimal(1, digits.Count() - 1);
+                }
+            }
             else
             {
                 result = MakeDecimal(5, digits.Count() - 1);
@@ -147,7 +162,7 @@ namespace CleanTechSim.MainPage.Models.Helper.GraphData.Prepare
                 throw new ArgumentException();
             }
 
-            decimal dividedByNumIntervals = median / numPreferedIntervals;
+            decimal dividedByNumIntervals = maxValue / numPreferedIntervals;
             int rounding = FindNearestRounding(dividedByNumIntervals);
 
             numIntervals = (int)Decimal.Round(maxValue / rounding, MidpointRounding.AwayFromZero);
@@ -201,9 +216,15 @@ namespace CleanTechSim.MainPage.Models.Helper.GraphData.Prepare
             return location;
         }
 
-        public PreparedDataPoints GenerateDataPoints(decimal median, decimal dispersion, decimal skew)
+        public PreparedDataPoints GenerateDataPoints(decimal median, decimal dispersion, decimal skew, decimal? maxXValue)
         {
             decimal maxGraph = median * maxGraphXAxisTimesMedian;
+
+            if (maxXValue.HasValue && maxXValue.Value < maxGraph)
+            {
+                maxGraph = maxXValue.Value;
+            }
+
             decimal location = FindDistributionLocation(median, dispersion, skew);
 
             SkewNormalDistribution distribution = new SkewNormalDistribution(
@@ -228,8 +249,8 @@ namespace CleanTechSim.MainPage.Models.Helper.GraphData.Prepare
 
             for (int i = startInterval; i < numIntervals; ++i)
             {
-                decimal computeXValue = xValue + step / 2;
-                labels[i] = "" + computeXValue;
+                decimal computeXValue = xValue + step / 2m;
+                labels[i] = "" + xValue;
 
                 decimal distValue = (decimal)distribution.DistributionFunction((double)computeXValue);
 
@@ -285,6 +306,18 @@ namespace CleanTechSim.MainPage.Models.Helper.GraphData.Prepare
                     DISPERSION_DEFAULT,
                     SKEW_DEFAULT);
 
+        public static DynamicGraph PropensityGraph = new DynamicGraph(
+                    "Propensity for EV purchase",
+                    "All else being equal",
+                    50m,
+                    0m,
+                    100m,
+                    15.0m,
+                    3.0m,
+                    DISPERSION_DEFAULT,
+                    SKEW_DEFAULT,
+
+                    100m); // suggested max x, used by graph generator to limit values
 
     }
 }

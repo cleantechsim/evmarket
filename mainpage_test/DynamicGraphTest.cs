@@ -30,6 +30,8 @@ namespace CleanTechSim.MainPage.Models.Helper.GraphData.Prepare
         [Test]
         public void TestFindNearestRounding()
         {
+            Assert.AreEqual(10, DynamicGraph.FindNearestRounding(10m));
+
             Assert.AreEqual(500, DynamicGraph.FindNearestRounding(473.2m));
             Assert.AreEqual(500, DynamicGraph.FindNearestRounding(500.0m));
 
@@ -46,6 +48,9 @@ namespace CleanTechSim.MainPage.Models.Helper.GraphData.Prepare
 
             Assert.AreEqual(5000, DynamicGraph.FindGraphPercentageIntervals(25000m, 50000m, 10, out numIntervals));
 
+            Assert.AreEqual(10, numIntervals);
+
+            Assert.AreEqual(10, DynamicGraph.FindGraphPercentageIntervals(50m, 100m, 10, out numIntervals));
             Assert.AreEqual(10, numIntervals);
         }
     }

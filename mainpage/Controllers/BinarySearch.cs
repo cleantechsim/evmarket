@@ -12,12 +12,20 @@ namespace CleanTechSim.MainPage.Helpers
 
     internal class BinarySearch
     {
-
         internal static decimal Search(decimal start, decimal num, Compare comparer)
+        {
+            return Search(start, num, comparer, 0);
+        }
+
+        private static decimal Search(decimal start, decimal num, Compare comparer, int level)
         {
             decimal foundIndex;
 
-            if (num == 0)
+            if (num < 0)
+            {
+                throw new ArgumentException();
+            }
+            else if (num == 0)
             {
                 foundIndex = -1;
             }
@@ -33,12 +41,10 @@ namespace CleanTechSim.MainPage.Helpers
 
                 int val = comparer.Invoke(mid);
 
-                Console.WriteLine("## test with mid " + mid);
-
                 switch (val)
                 {
                     case -1:
-                        foundIndex = Search(start, sectionOffset, comparer);
+                        foundIndex = Search(start, sectionOffset, comparer, level + 1);
                         break;
 
                     case 0:
@@ -46,7 +52,7 @@ namespace CleanTechSim.MainPage.Helpers
                         break;
 
                     case 1:
-                        foundIndex = Search(mid, num - sectionOffset - 1, comparer);
+                        foundIndex = Search(mid, num - sectionOffset, comparer, level + 1);
                         break;
 
                     default:
