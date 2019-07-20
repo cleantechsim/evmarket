@@ -27,7 +27,7 @@ DynamicGraph.prototype.initChart = function () {
 
     this.queryGraphData(function (response) {
 
-        chart = new Chart(ctx, {
+        var chartParams = {
             type: 'line',
             data: {
                 labels: response.labels,
@@ -49,8 +49,10 @@ DynamicGraph.prototype.initChart = function () {
                 },
                 spanGaps: true
             }
-        });
-    })
+        };
+
+        chart = new Chart(ctx, chartParams);
+    });
 }
 
 DynamicGraph.prototype.updateGraph = function (chart) {
