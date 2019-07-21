@@ -1,7 +1,7 @@
 
 // Still use old class style for IE11 desktop users
 
-function DynamicGraph(graphId, ajaxUrl, canvasElementId, medianInputElementId, dispersionInputElementId, skewInputElementId) {
+function InputGraph(graphId, ajaxUrl, canvasElementId, medianInputElementId, dispersionInputElementId, skewInputElementId) {
 
     this.graphId = graphId;
     this.ajaxUrl = ajaxUrl;
@@ -11,7 +11,7 @@ function DynamicGraph(graphId, ajaxUrl, canvasElementId, medianInputElementId, d
     this.skewInput = document.getElementById(skewInputElementId);
 }
 
-DynamicGraph.prototype.initChart = function () {
+InputGraph.prototype.initChart = function () {
 
     var chart;
 
@@ -55,7 +55,7 @@ DynamicGraph.prototype.initChart = function () {
     });
 }
 
-DynamicGraph.prototype.updateGraph = function (chart) {
+InputGraph.prototype.updateGraph = function (chart) {
 
     this.queryGraphData(function (response) {
         chart.data.labels = response.labels;
@@ -65,7 +65,7 @@ DynamicGraph.prototype.updateGraph = function (chart) {
     })
 }
 
-DynamicGraph.prototype.queryGraphData = function (onSuccess) {
+InputGraph.prototype.queryGraphData = function (onSuccess) {
 
     axios.get(this.ajaxUrl
         + '?graphId=' + this.graphId

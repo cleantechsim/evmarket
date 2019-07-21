@@ -11,7 +11,7 @@ using CleanTechSim.MainPage.Helpers;
 
 namespace CleanTechSim.MainPage.Models.Helper.Graphs
 {
-    public class DynamicGraph
+    public class InputGraph
     {
         public static Range DISPERSION_DEFAULT = new Range(0, 0.75m, 1.5m, 0.05m);
         public static Range SKEW_DEFAULT = new Range(-30, 0, 30, 0.5m);
@@ -33,7 +33,7 @@ namespace CleanTechSim.MainPage.Models.Helper.Graphs
         public Range Dispersion { get; }
         public Range Skew { get; }
 
-        public DynamicGraph(
+        public InputGraph(
             string title, string subTitle,
             decimal median, decimal minMedianInput, decimal maxMedianInput,
             decimal suggestedMaxY,

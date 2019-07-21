@@ -26,7 +26,7 @@ namespace CleanTechSim.MainPage.Controllers
 
             Dictionary<string, object> dictionary = new Dictionary<string, object>();
 
-            DynamicGraph graph;
+            InputGraph graph;
 
             // Get from static data
             switch (graphId)

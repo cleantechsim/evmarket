@@ -4,7 +4,7 @@ using CleanTechSim.MainPage.Models.Helper.Graphs;
 namespace CleanTechSim.MainPage.Models.Helper.Graphs.Consumer
 {
 
-    public class IncomeGraph : DynamicGraph
+    public class IncomeGraph : InputGraph
     {
         public static readonly IncomeGraph INSTANCE = new IncomeGraph();
 

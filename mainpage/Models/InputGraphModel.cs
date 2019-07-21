@@ -20,7 +20,7 @@ namespace CleanTechSim.MainPage.Models
         }
     }
 
-    public class DynamicGraphModel : BaseGraphModel
+    public class InputGraphModel : BaseGraphModel
     {
         public string AjaxUri { get; }
 
@@ -28,7 +28,7 @@ namespace CleanTechSim.MainPage.Models
         public Range Dispersion { get; }
         public Range Skew { get; }
 
-        public DynamicGraphModel(
+        public InputGraphModel(
             string graphId,
             string title,
             string subTitle,

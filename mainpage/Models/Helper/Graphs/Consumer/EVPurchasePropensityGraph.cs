@@ -3,7 +3,7 @@ using CleanTechSim.MainPage.Models.Helper.Graphs;
 
 namespace CleanTechSim.MainPage.Models.Helper.Graphs
 {
-    public class EVPurchasePropensityGraph : DynamicGraph
+    public class EVPurchasePropensityGraph : InputGraph
     {
         public static readonly EVPurchasePropensityGraph INSTANCE = new EVPurchasePropensityGraph();
 

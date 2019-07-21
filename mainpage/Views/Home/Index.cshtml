@@ -39,9 +39,9 @@
         @{ await Html.RenderPartialAsync("_LineGraphStaticPartial", Model.EVPerformance); }
         -->
 
-        @{ await Html.RenderPartialAsync("_LineGraphDynamicPartial", Model.Income); }
-        @{ await Html.RenderPartialAsync("_LineGraphDynamicPartial", Model.RangeRequirement); }
-        @{ await Html.RenderPartialAsync("_LineGraphDynamicPartial", Model.Propensity); }
+        @{ await Html.RenderPartialAsync("_LineGraphInputPartial", Model.Income); }
+        @{ await Html.RenderPartialAsync("_LineGraphInputPartial", Model.RangeRequirement); }
+        @{ await Html.RenderPartialAsync("_LineGraphInputPartial", Model.Propensity); }
 
     </div>
 </div>

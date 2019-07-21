@@ -1,6 +1,6 @@
 @using System.Linq
 @using CleanTechSim.MainPage.Models
-@model DynamicGraphModel
+@model InputGraphModel
 
 @{
     string divElementId = Model.GraphId;
@@ -20,13 +20,13 @@
     
     <canvas id="@canvasElementId"></canvas>
 
-    <div class="dynamic-graph-inputs">
-        <div class="dynamic-graph-input-row">
-            <span class="dynamic-graph-label">Median</span>
-            <input id="@medianInputElementId" type="number" value="@Model.Median" class="dynamic-graph-input">
+    <div class="input-graph-inputs">
+        <div class="input-graph-input-row">
+            <span class="input-graph-label">Median</span>
+            <input id="@medianInputElementId" type="number" value="@Model.Median" class="input-graph-input">
         </div>
-        <div class="dynamic-graph-input-row">
-            <span class="dynamic-graph-label">Dispersion</span>
+        <div class="input-graph-input-row">
+            <span class="input-graph-label">Dispersion</span>
             <input
                     id="@dispersionInputElementId"
                     type="range"
@@ -34,10 +34,10 @@
                     min="@Model.Dispersion.Min"
                     max="@Model.Dispersion.Max"
                     step="@Model.Dispersion.Step"
-                    class="dynamic-graph-input">
+                    class="input-graph-input">
         </div>
-        <div class="dynamic-graph-input-row">
-            <span class="dynamic-graph-label">Skew</span>
+        <div class="input-graph-input-row">
+            <span class="input-graph-label">Skew</span>
             <input
                     id="@skewInputElementId"
                     type="range"
@@ -45,13 +45,13 @@
                     min="@Model.Skew.Min"
                     max="@Model.Skew.Max"
                     step="@Model.Skew.Step" 
-                    class="dynamic-graph-input">
+                    class="input-graph-input">
         </div>
     </div>
 
     <script>
 
-        new DynamicGraph(
+        new InputGraph(
             '@Model.GraphId',
             '@Model.AjaxUri.ToString()',
 

@@ -1,7 +1,7 @@
 
 namespace CleanTechSim.MainPage.Models.Helper.Graphs.Consumer
 {
-    public class RangeRequirementsGraph : DynamicGraph
+    public class RangeRequirementsGraph : InputGraph
     {
         public static readonly RangeRequirementsGraph INSTANCE = new RangeRequirementsGraph();
 

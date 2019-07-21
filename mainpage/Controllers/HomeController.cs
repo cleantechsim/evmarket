@@ -194,15 +194,15 @@ namespace CleanTechSim.MainPage.Controllers
                     GraphIds.EV_SALES_PRICE_ID,
                     GetAllMultiLine(typeof(Vehicle), EVSalesPriceGraph.MODEL)),
 
-                MakeDynamicModel(
+                MakeInputGraphModel(
                     GraphIds.INCOME_ID,
                     IncomeGraph.INSTANCE
                 ),
-                MakeDynamicModel(
+                MakeInputGraphModel(
                     GraphIds.RANGE_REQUIREMENT_ID,
                     RangeRequirementsGraph.INSTANCE
                 ),
-                MakeDynamicModel(
+                MakeInputGraphModel(
                     GraphIds.PROPENSITY_ID,
                     EVPurchasePropensityGraph.INSTANCE
                 )
@@ -218,11 +218,11 @@ namespace CleanTechSim.MainPage.Controllers
             return new StaticGraphModel(graphId, lineGraph.Title, lineGraph.SubTitle, dataPoints);
         }
 
-        private static DynamicGraphModel MakeDynamicModel(
+        private static InputGraphModel MakeInputGraphModel(
             string graphId,
-            DynamicGraph graph)
+            InputGraph graph)
         {
-            return new DynamicGraphModel(
+            return new InputGraphModel(
                 graphId,
                 graph.Title,
                 graph.SubTitle,
