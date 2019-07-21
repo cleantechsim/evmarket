@@ -31,7 +31,7 @@ namespace CleanTechSim.MainPage.Models.Helper.Graphs.Market
 
     internal class EVSalesPriceGraph : YearsGraph
     {
-        internal static EVSalesPricePrepared ComputeAverageSalesPricePerYear(IEnumerable<Vehicle> instances)
+        internal static EVSalesPricePrepared ComputeAverageAndMedianSalesPricePerYear(IEnumerable<Vehicle> instances)
         {
             List<int> sortedYears = GetDistinctSortedYearsForVehicles(instances);
 
@@ -76,7 +76,7 @@ namespace CleanTechSim.MainPage.Models.Helper.Graphs.Market
 
             2,
 
-            instances => ComputeAverageSalesPricePerYear(instances),
+            instances => ComputeAverageAndMedianSalesPricePerYear(instances),
 
             line => line == 0 ? "Average" : "Median",
 
