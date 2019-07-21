@@ -11,8 +11,11 @@ using CleanTechSim.MainPage.Helpers.Storage.AzureTableStorage;
 
 using CleanTechSim.MainPage.Models.Helper.ClientGraph;
 using CleanTechSim.MainPage.Models.Helper.GraphData;
-
+using CleanTechSim.MainPage.Models.Helper.Graphs;
+using CleanTechSim.MainPage.Models.Helper.Graphs.Consumer;
+using CleanTechSim.MainPage.Models.Helper.Graphs.Market;
 using CleanTechSim.MainPage.Helpers;
+
 
 namespace CleanTechSim.MainPage.Controllers
 {
@@ -169,39 +172,39 @@ namespace CleanTechSim.MainPage.Controllers
             IndexModel model = new IndexModel(
                 VerifyAndComputeStaticModel(
                     GraphIds.EV_ADOPTION_ID,
-                    GetAllMultiLine(typeof(MonthlyCountryEVCarSales), StaticData.EvAdoptionGraph)),
+                    GetAllMultiLine(typeof(MonthlyCountryEVCarSales), EVAdoptionGraph.MODEL)),
 
                 VerifyAndComputeStaticModel(
                     GraphIds.BATTERY_COST_ID,
-                    GetAllSingleLine(typeof(BatteryCost), StaticData.BatteryCostGraph)),
+                    GetAllSingleLine(typeof(BatteryCost), BatteryCostGraph.MODEL)),
 
                 VerifyAndComputeStaticModel(
                     GraphIds.EV_RANGE_ID,
-                    GetAllMultiLine(typeof(Vehicle), StaticData.EVRangeGraph)),
+                    GetAllMultiLine(typeof(Vehicle), EVRangeGraph.MODEL)),
 
                 VerifyAndComputeStaticModel(
                     GraphIds.EV_CHOICE_ID,
-                    GetAllSingleLine(typeof(Vehicle), StaticData.EVChoiceGraph)),
+                    GetAllSingleLine(typeof(Vehicle), EVChoiceGraph.MODEL)),
 
                 VerifyAndComputeStaticModel(
                     GraphIds.EV_PERFORMANCE_ID,
-                    GetAllSingleLine(typeof(Vehicle), StaticData.EVPerformanceGraph)),
+                    GetAllSingleLine(typeof(Vehicle), EVPerformanceGraph.MODEL)),
 
                 VerifyAndComputeStaticModel(
                     GraphIds.EV_SALES_PRICE_ID,
-                    GetAllMultiLine(typeof(Vehicle), StaticData.EVSalesPriceGraph)),
+                    GetAllMultiLine(typeof(Vehicle), EVSalesPriceGraph.MODEL)),
 
                 MakeDynamicModel(
                     GraphIds.INCOME_ID,
-                    DynamicData.IncomeGraph
+                    IncomeGraph.INSTANCE
                 ),
                 MakeDynamicModel(
                     GraphIds.RANGE_REQUIREMENT_ID,
-                    DynamicData.RangeRequirementGraph
+                    RangeRequirementsGraph.INSTANCE
                 ),
                 MakeDynamicModel(
                     GraphIds.PROPENSITY_ID,
-                    DynamicData.PropensityGraph
+                    EVPurchasePropensityGraph.INSTANCE
                 )
             );
 

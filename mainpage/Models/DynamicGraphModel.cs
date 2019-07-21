@@ -4,6 +4,22 @@ using CleanTechSim.MainPage.Models.Helper.GraphData.Prepare;
 
 namespace CleanTechSim.MainPage.Models
 {
+    public class Range
+    {
+        public decimal Min { get; }
+        public decimal Initial { get; }
+        public decimal Max { get; }
+        public decimal Step { get; }
+
+        public Range(decimal min, decimal initial, decimal max, decimal step)
+        {
+            this.Min = min;
+            this.Initial = initial;
+            this.Max = max;
+            this.Step = step;
+        }
+    }
+
     public class DynamicGraphModel : BaseGraphModel
     {
         public string AjaxUri { get; }

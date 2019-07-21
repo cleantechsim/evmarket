@@ -1,34 +1,21 @@
 
 using System;
-using System.Runtime.CompilerServices;
-using System.Linq;
 using System.Collections.Generic;
-using CleanTechSim.MainPage.Helpers;
-using CleanTechSim.MainPage.Models.Helper.ClientGraph;
+using System.Linq;
 using Accord.Statistics.Distributions.Univariate;
 
+using CleanTechSim.MainPage.Models.Helper.ClientGraph;
+using CleanTechSim.MainPage.Models.Helper.GraphData;
 
-[assembly: InternalsVisibleTo("mainpage_test")]
-namespace CleanTechSim.MainPage.Models.Helper.GraphData.Prepare
+using CleanTechSim.MainPage.Helpers;
+
+namespace CleanTechSim.MainPage.Models.Helper.Graphs
 {
-    public class Range
-    {
-        public decimal Min { get; }
-        public decimal Initial { get; }
-        public decimal Max { get; }
-        public decimal Step { get; }
-
-        public Range(decimal min, decimal initial, decimal max, decimal step)
-        {
-            this.Min = min;
-            this.Initial = initial;
-            this.Max = max;
-            this.Step = step;
-        }
-    }
-
     public class DynamicGraph
     {
+        public static Range DISPERSION_DEFAULT = new Range(0, 0.75m, 1.5m, 0.05m);
+        public static Range SKEW_DEFAULT = new Range(-30, 0, 30, 0.5m);
+
         private decimal maxGraphXAxisTimesMedian;
         private decimal minHistogramInterval;
 
@@ -277,47 +264,5 @@ namespace CleanTechSim.MainPage.Models.Helper.GraphData.Prepare
 
             return new PreparedDataPoints(labels, new DataSet[] { dataSet });
         }
-    }
-
-    public class DynamicData
-    {
-        private static Range DISPERSION_DEFAULT = new Range(0, 0.75m, 1.5m, 0.05m);
-        private static Range SKEW_DEFAULT = new Range(-30, 0, 30, 0.5m);
-
-        public static DynamicGraph IncomeGraph = new DynamicGraph(
-                    "Income",
-                    "Income distribution",
-                    25000m,
-                    1000m,
-                    100000m,
-                    10.0m,
-                    3.0m,
-                    DISPERSION_DEFAULT,
-                    SKEW_DEFAULT);
-
-        public static DynamicGraph RangeRequirementGraph = new DynamicGraph(
-                    "Range",
-                    "Requirement for range",
-                    250m,
-                    50m,
-                    1000m,
-                    15.0m,
-                    3.0m,
-                    DISPERSION_DEFAULT,
-                    SKEW_DEFAULT);
-
-        public static DynamicGraph PropensityGraph = new DynamicGraph(
-                    "Propensity for EV purchase",
-                    "All else being equal",
-                    50m,
-                    0m,
-                    100m,
-                    15.0m,
-                    3.0m,
-                    DISPERSION_DEFAULT,
-                    SKEW_DEFAULT,
-
-                    100m); // suggested max x, used by graph generator to limit values
-
     }
 }

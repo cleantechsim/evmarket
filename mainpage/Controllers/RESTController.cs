@@ -6,6 +6,9 @@ using CleanTechSim.MainPage.Helpers;
 using CleanTechSim.MainPage.Models.Helper.ClientGraph;
 using CleanTechSim.MainPage.Models.Helper.GraphData.Prepare;
 
+using CleanTechSim.MainPage.Models.Helper.Graphs;
+using CleanTechSim.MainPage.Models.Helper.Graphs.Consumer;
+
 using System.Collections.Generic;
 
 namespace CleanTechSim.MainPage.Controllers
@@ -29,15 +32,15 @@ namespace CleanTechSim.MainPage.Controllers
             switch (graphId)
             {
                 case GraphIds.INCOME_ID:
-                    graph = DynamicData.IncomeGraph;
+                    graph = IncomeGraph.INSTANCE;
                     break;
 
                 case GraphIds.RANGE_REQUIREMENT_ID:
-                    graph = DynamicData.RangeRequirementGraph;
+                    graph = RangeRequirementsGraph.INSTANCE;
                     break;
 
                 case GraphIds.PROPENSITY_ID:
-                    graph = DynamicData.PropensityGraph;
+                    graph = EVPurchasePropensityGraph.INSTANCE;
                     break;
 
                 default:
