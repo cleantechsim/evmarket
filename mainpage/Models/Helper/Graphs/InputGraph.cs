@@ -11,6 +11,20 @@ using CleanTechSim.MainPage.Helpers;
 
 namespace CleanTechSim.MainPage.Models.Helper.Graphs
 {
+    public class InputGraphSelection
+    {
+        public decimal Median { get; }
+        public decimal Dispersion { get; }
+        public decimal Skew { get; }
+
+        public InputGraphSelection(decimal median, decimal dispersion, decimal skew)
+        {
+            this.Median = median;
+            this.Dispersion = dispersion;
+            this.Skew = skew;
+        }
+    }
+
     public class InputGraph
     {
         public static Range DISPERSION_DEFAULT = new Range(0, 0.75m, 1.5m, 0.05m);
@@ -172,10 +186,11 @@ namespace CleanTechSim.MainPage.Models.Helper.Graphs
                 Compare compare = value =>
                 {
 
-                    SkewNormalDistribution distribution = new SkewNormalDistribution(
-                        (double)value,
-                        (double)(median * dispersion),
-                        (double)skew);
+                    SkewNormalDistribution distribution = MakeSkewNormalDistribution(
+                        value,
+                        median,
+                        dispersion,
+                        skew);
 
                     decimal distMedian = (decimal)distribution.Median;
 
@@ -203,6 +218,16 @@ namespace CleanTechSim.MainPage.Models.Helper.Graphs
             return location;
         }
 
+        private static SkewNormalDistribution MakeSkewNormalDistribution(decimal location, decimal median, decimal dispersion, decimal skew)
+        {
+            SkewNormalDistribution distribution = new SkewNormalDistribution(
+                            (double)location,
+                            (double)(median * dispersion),
+                            (double)skew);
+
+            return distribution;
+        }
+
         public PreparedDataPoints GenerateDataPoints(decimal median, decimal dispersion, decimal skew, decimal? maxXValue)
         {
             decimal maxGraph = median * maxGraphXAxisTimesMedian;
@@ -214,11 +239,11 @@ namespace CleanTechSim.MainPage.Models.Helper.Graphs
 
             decimal location = FindDistributionLocation(median, dispersion, skew);
 
-            SkewNormalDistribution distribution = new SkewNormalDistribution(
-                (double)location,
-                (double)(median * dispersion),
-                (double)skew);
-
+            SkewNormalDistribution distribution = MakeSkewNormalDistribution(
+                location,
+                median,
+                dispersion,
+                skew);
 
             int numIntervals;
 
