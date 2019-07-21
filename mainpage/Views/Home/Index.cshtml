@@ -29,14 +29,14 @@
 
     <h2 id="main-barriers">Barriers</h2>
     <div id="barrier-graphs">
-        @{ await Html.RenderPartialAsync("_LineGraphStaticPartial", Model.EVAdoption); }
-        @{ await Html.RenderPartialAsync("_LineGraphStaticPartial", Model.EVRange); }
-        @{ await Html.RenderPartialAsync("_LineGraphStaticPartial", Model.EVChoice); }
-        @{ await Html.RenderPartialAsync("_LineGraphStaticPartial", Model.EVSalesPrice); }
+        @{ await Html.RenderPartialAsync("_LineGraphStatsPartial", Model.EVAdoption); }
+        @{ await Html.RenderPartialAsync("_LineGraphStatsPartial", Model.EVRange); }
+        @{ await Html.RenderPartialAsync("_LineGraphStatsPartial", Model.EVChoice); }
+        @{ await Html.RenderPartialAsync("_LineGraphStatsPartial", Model.EVSalesPrice); }
 
         <!--
-        @{ await Html.RenderPartialAsync("_LineGraphStaticPartial", Model.BatteryCost); }
-        @{ await Html.RenderPartialAsync("_LineGraphStaticPartial", Model.EVPerformance); }
+        @{ await Html.RenderPartialAsync("_LineGraphStatsPartial", Model.BatteryCost); }
+        @{ await Html.RenderPartialAsync("_LineGraphStatsPartial", Model.EVPerformance); }
         -->
 
         @{ await Html.RenderPartialAsync("_LineGraphInputPartial", Model.Income); }

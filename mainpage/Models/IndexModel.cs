@@ -5,24 +5,24 @@ namespace CleanTechSim.MainPage.Models
 {
     public class IndexModel
     {
-        public StaticGraphModel EVAdoption { get; }
-        public StaticGraphModel BatteryCost { get; }
-        public StaticGraphModel EVRange { get; }
-        public StaticGraphModel EVChoice { get; }
-        public StaticGraphModel EVPerformance { get; }
-        public StaticGraphModel EVSalesPrice { get; }
+        public StatsGraphModel EVAdoption { get; }
+        public StatsGraphModel BatteryCost { get; }
+        public StatsGraphModel EVRange { get; }
+        public StatsGraphModel EVChoice { get; }
+        public StatsGraphModel EVPerformance { get; }
+        public StatsGraphModel EVSalesPrice { get; }
 
         public InputGraphModel Income { get; }
         public InputGraphModel RangeRequirement { get; }
         public InputGraphModel Propensity { get; }
 
         public IndexModel(
-            StaticGraphModel evAdoption,
-            StaticGraphModel batteryCost,
-            StaticGraphModel evRange,
-            StaticGraphModel evChoice,
-            StaticGraphModel evPerformance,
-            StaticGraphModel evSalesPrice,
+            StatsGraphModel evAdoption,
+            StatsGraphModel batteryCost,
+            StatsGraphModel evRange,
+            StatsGraphModel evChoice,
+            StatsGraphModel evPerformance,
+            StatsGraphModel evSalesPrice,
 
             InputGraphModel income,
             InputGraphModel rangeRequirement,

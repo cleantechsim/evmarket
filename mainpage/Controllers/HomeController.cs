@@ -170,27 +170,27 @@ namespace CleanTechSim.MainPage.Controllers
         public IActionResult Index()
         {
             IndexModel model = new IndexModel(
-                VerifyAndComputeStaticModel(
+                VerifyAndComputeStatsModel(
                     GraphIds.EV_ADOPTION_ID,
                     GetAllMultiLine(typeof(MonthlyCountryEVCarSales), EVAdoptionGraph.MODEL)),
 
-                VerifyAndComputeStaticModel(
+                VerifyAndComputeStatsModel(
                     GraphIds.BATTERY_COST_ID,
                     GetAllSingleLine(typeof(BatteryCost), BatteryCostGraph.MODEL)),
 
-                VerifyAndComputeStaticModel(
+                VerifyAndComputeStatsModel(
                     GraphIds.EV_RANGE_ID,
                     GetAllMultiLine(typeof(Vehicle), EVRangeGraph.MODEL)),
 
-                VerifyAndComputeStaticModel(
+                VerifyAndComputeStatsModel(
                     GraphIds.EV_CHOICE_ID,
                     GetAllSingleLine(typeof(Vehicle), EVChoiceGraph.MODEL)),
 
-                VerifyAndComputeStaticModel(
+                VerifyAndComputeStatsModel(
                     GraphIds.EV_PERFORMANCE_ID,
                     GetAllSingleLine(typeof(Vehicle), EVPerformanceGraph.MODEL)),
 
-                VerifyAndComputeStaticModel(
+                VerifyAndComputeStatsModel(
                     GraphIds.EV_SALES_PRICE_ID,
                     GetAllMultiLine(typeof(Vehicle), EVSalesPriceGraph.MODEL)),
 
@@ -211,11 +211,11 @@ namespace CleanTechSim.MainPage.Controllers
             return View(model);
         }
 
-        private static StaticGraphModel VerifyAndComputeStaticModel(string graphId, LineGraph lineGraph)
+        private static StatsGraphModel VerifyAndComputeStatsModel(string graphId, LineGraph lineGraph)
         {
             PreparedDataPoints dataPoints = PreparedDataPoints.VerifyAndCompute(lineGraph);
 
-            return new StaticGraphModel(graphId, lineGraph.Title, lineGraph.SubTitle, dataPoints);
+            return new StatsGraphModel(graphId, lineGraph.Title, lineGraph.SubTitle, dataPoints);
         }
 
         private static InputGraphModel MakeInputGraphModel(
