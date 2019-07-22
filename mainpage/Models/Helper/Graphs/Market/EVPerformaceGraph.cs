@@ -21,7 +21,7 @@ namespace CleanTechSim.MainPage.Models.Helper.Graphs.Market
         }
     }
 
-    internal class EVPerformanceGraph : YearsGraph
+    internal class EVPerformanceGraph : YearsGraph<EVPerformancePrepared>
     {
         internal static EVPerformancePrepared ComputeAveragePerformancePerYear(IEnumerable<Vehicle> instances)
         {
@@ -50,7 +50,7 @@ namespace CleanTechSim.MainPage.Models.Helper.Graphs.Market
             return new EVPerformancePrepared(sortedYears, averagePerformanceByYear);
         }
 
-        public static IGraphModelType<IEnumerable<Vehicle>, EVPerformancePrepared> MODEL
+        private static IGraphModelType<IEnumerable<Vehicle>, EVPerformancePrepared> MODEL
             = new GraphModelType<IEnumerable<Vehicle>, EVPerformancePrepared>(
             "0-100 km/t (0-60 mph)",
             "Performance",
@@ -77,6 +77,13 @@ namespace CleanTechSim.MainPage.Models.Helper.Graphs.Market
             }
         );
 
+        internal static readonly EVPerformanceGraph INSTANCE = new EVPerformanceGraph();
+
+        private EVPerformanceGraph()
+            : base(MODEL)
+        {
+
+        }
     }
 }
 

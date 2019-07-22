@@ -21,7 +21,7 @@ namespace CleanTechSim.MainPage.Models.Helper.Graphs.Market
         }
     }
 
-    internal class EVChoiceGraph : YearsGraph
+    internal class EVChoiceGraph : YearsGraph<EVChoicePrepared>
     {
         internal static EVChoicePrepared ComputeNumberOfNewModelsPerYear(IEnumerable<Vehicle> instances)
         {
@@ -43,7 +43,7 @@ namespace CleanTechSim.MainPage.Models.Helper.Graphs.Market
             return new EVChoicePrepared(sortedYears, numberOfNewModelsByYear);
         }
 
-        internal static IGraphModelType<IEnumerable<Vehicle>, EVChoicePrepared> MODEL
+        private static IGraphModelType<IEnumerable<Vehicle>, EVChoicePrepared> MODEL
             = new GraphModelType<IEnumerable<Vehicle>, EVChoicePrepared>(
             "Choice",
             "Number of new models per year",
@@ -62,5 +62,13 @@ namespace CleanTechSim.MainPage.Models.Helper.Graphs.Market
             (instances, prepared, line, index) => prepared.YearsSorted.ElementAt(index),
             (instances, prepared, line, index) => prepared.NumberOfNewModelsByYear[prepared.YearsSorted.ElementAt(index)]
         );
+
+        internal static readonly EVChoiceGraph INSTANCE = new EVChoiceGraph();
+
+        private EVChoiceGraph()
+            : base(MODEL)
+        {
+
+        }
     }
 }

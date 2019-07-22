@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 using CleanTechSim.MainPage.Models.Domain;
 
+using CleanTechSim.MainPage.Models.Helper.GraphData.Prepare;
+
 namespace CleanTechSim.MainPage.Models.Helper.Graphs.Market
 {
 
@@ -16,8 +18,14 @@ namespace CleanTechSim.MainPage.Models.Helper.Graphs.Market
         }
     }
 
-    internal class YearsGraph
+    internal class YearsGraph<PREPARED> : InstanceStatsGraph<Vehicle, PREPARED> where PREPARED : EVYearsPrepared
     {
+        internal YearsGraph(IGraphModelType<IEnumerable<Vehicle>, PREPARED> graphModelType)
+            : base(graphModelType)
+        {
+
+        }
+
         internal static List<int> GetDistinctSortedYearsForVehicles(IEnumerable<Vehicle> instances, int? maxYear = null)
         {
             HashSet<int> distinctYears = new HashSet<int>();

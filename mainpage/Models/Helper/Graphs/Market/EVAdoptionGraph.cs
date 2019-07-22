@@ -6,9 +6,10 @@ using CleanTechSim.MainPage.Models.Helper.GraphData.Prepare;
 namespace CleanTechSim.MainPage.Models.Helper.Graphs.Market
 {
 
-    public class EVAdoptionGraph
+    internal class EVAdoptionGraph : KeyedInstanceStatsGraph<MonthlyCountryEVCarSales, string>
+
     {
-        public static readonly IMultiLineGraphModelType<MonthlyCountryEVCarSales, string> MODEL = new MultiLineKeyedGraphModelType<MonthlyCountryEVCarSales, string>(
+        private static readonly IMultiLineGraphModelType<MonthlyCountryEVCarSales, string> MODEL = new MultiLineKeyedGraphModelType<MonthlyCountryEVCarSales, string>(
             "Awareness",
             "EV percent marketshare by month",
 
@@ -21,6 +22,14 @@ namespace CleanTechSim.MainPage.Models.Helper.Graphs.Market
             instance => instance.Country,
             key => key
         );
+
+        public static readonly EVAdoptionGraph INSTANCE = new EVAdoptionGraph();
+
+        private EVAdoptionGraph()
+            : base(MODEL)
+        {
+
+        }
     }
 
 }

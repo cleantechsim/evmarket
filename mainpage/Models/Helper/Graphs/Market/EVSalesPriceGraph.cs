@@ -29,7 +29,7 @@ namespace CleanTechSim.MainPage.Models.Helper.Graphs.Market
         }
     }
 
-    internal class EVSalesPriceGraph : YearsGraph
+    internal class EVSalesPriceGraph : YearsGraph<EVSalesPricePrepared>
     {
         internal static EVSalesPricePrepared ComputeAverageAndMedianSalesPricePerYear(IEnumerable<Vehicle> instances)
         {
@@ -66,7 +66,7 @@ namespace CleanTechSim.MainPage.Models.Helper.Graphs.Market
             return new EVSalesPricePrepared(sortedYears, averageSalesPriceByYear, medianSalesPriceByYear);
         }
 
-        public static IGraphModelType<IEnumerable<Vehicle>, EVSalesPricePrepared> MODEL
+        private static IGraphModelType<IEnumerable<Vehicle>, EVSalesPricePrepared> MODEL
             = new GraphModelType<IEnumerable<Vehicle>, EVSalesPricePrepared>(
             "Cost",
             "Sales price in dollars",
@@ -95,6 +95,13 @@ namespace CleanTechSim.MainPage.Models.Helper.Graphs.Market
             }
         );
 
+        internal static readonly EVSalesPriceGraph INSTANCE = new EVSalesPriceGraph();
+
+        private EVSalesPriceGraph()
+            : base(MODEL)
+        {
+
+        }
     }
 
 }

@@ -5,9 +5,9 @@ using CleanTechSim.MainPage.Models.Helper.GraphData.Prepare;
 
 namespace CleanTechSim.MainPage.Models.Helper.Graphs.Market
 {
-    public class BatteryCostGraph
+    internal class BatteryCostGraph : InstanceStatsGraph<BatteryCost, object>
     {
-        public static readonly ISingleLineGraphModelType<BatteryCost> MODEL = new SingleLineGraphModelType<BatteryCost>(
+        private static readonly ISingleLineGraphModelType<BatteryCost> MODEL = new SingleLineGraphModelType<BatteryCost>(
             "Cost",
             "Battery cost in $/kWh",
 
@@ -18,5 +18,14 @@ namespace CleanTechSim.MainPage.Models.Helper.Graphs.Market
             instance => instance.Cost
         );
 
+        internal static readonly BatteryCostGraph INSTANCE = new BatteryCostGraph();
+
+        private BatteryCostGraph()
+            : base(MODEL)
+        {
+
+        }
+
     }
+
 }

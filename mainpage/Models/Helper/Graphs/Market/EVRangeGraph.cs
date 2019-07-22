@@ -10,22 +10,21 @@ using CleanTechSim.MainPage.Models.Helper.GraphData.Prepare;
 
 namespace CleanTechSim.MainPage.Models.Helper.Graphs.Market
 {
-    internal class EVRangeGraph : YearsGraph
+    internal class EVRangePrepared : EVYearsPrepared
     {
-        internal class EVRangePrepared : EVYearsPrepared
+        internal IDictionary<int, int> AverageRangeByYear { get; }
+        internal IDictionary<int, int> MedianRangeByYear { get; }
+
+        internal EVRangePrepared(IEnumerable<int> yearsSorted, IDictionary<int, int> averageRangePerYear, IDictionary<int, int> medianRangePerYear)
+            : base(yearsSorted)
         {
-            internal IDictionary<int, int> AverageRangeByYear { get; }
-            internal IDictionary<int, int> MedianRangeByYear { get; }
-
-            internal EVRangePrepared(IEnumerable<int> yearsSorted, IDictionary<int, int> averageRangePerYear, IDictionary<int, int> medianRangePerYear)
-                : base(yearsSorted)
-            {
-                this.AverageRangeByYear = averageRangePerYear;
-                this.MedianRangeByYear = medianRangePerYear;
-            }
+            this.AverageRangeByYear = averageRangePerYear;
+            this.MedianRangeByYear = medianRangePerYear;
         }
+    }
 
-
+    internal class EVRangeGraph : YearsGraph<EVRangePrepared>
+    {
         internal static EVRangePrepared ComputeAverageAndMedianRangePerYear(IEnumerable<Vehicle> instances)
         {
             Dictionary<Vehicle, int> wltpForCar = Vehicle.ComputeVehicleToWLTPRange(instances);
@@ -55,7 +54,7 @@ namespace CleanTechSim.MainPage.Models.Helper.Graphs.Market
             return new EVRangePrepared(sortedYears, averageRangeByYear, medianRangeByYear);
         }
 
-        public static IGraphModelType<IEnumerable<Vehicle>, EVRangePrepared> MODEL
+        private static IGraphModelType<IEnumerable<Vehicle>, EVRangePrepared> MODEL
             = new GraphModelType<IEnumerable<Vehicle>, EVRangePrepared>(
             "Range",
             "EV average range for new models",
@@ -81,5 +80,13 @@ namespace CleanTechSim.MainPage.Models.Helper.Graphs.Market
                     : prepared.MedianRangeByYear[year];
             }
         );
+
+        internal static readonly EVRangeGraph INSTANCE = new EVRangeGraph();
+
+        private EVRangeGraph()
+            : base(MODEL)
+        {
+
+        }
     }
 }
