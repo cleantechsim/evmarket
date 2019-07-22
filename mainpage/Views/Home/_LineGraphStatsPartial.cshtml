@@ -8,7 +8,7 @@
     string divElementId = Model.GraphId;
     string canvasElementId = Model.GraphId + "Canvas";
 }
-<div id="@divElementId" class="graph">
+<div id="@divElementId" class="graph-outer">
 
     @if (!string.IsNullOrWhiteSpace(Model.Title)) {
         <div>
@@ -16,7 +16,9 @@
         </div>
     }
     
-    <canvas id="@canvasElementId"></canvas>
+    <div class="graph-canvas-wrapper">
+        <canvas id="@canvasElementId" class="graph-canvas"></canvas>
+    </div>
 
     <script>
         var ctx = document.getElementById('@canvasElementId').getContext('2d');

@@ -27,35 +27,41 @@
 
     </p>
 
-    <h2 id="main-barriers">Barriers</h2>
-    <div id="barrier-graphs">
-        <div>
+    <div id="all-graphs">
+        <div id="market-statistics" class="graphs-section">
             <div class="graphs-title">Market statistics</div>
 
-            @{ await Html.RenderPartialAsync("_LineGraphStatsPartial", Model.EVAdoption); }
-            @{ await Html.RenderPartialAsync("_LineGraphStatsPartial", Model.EVRange); }
-            @{ await Html.RenderPartialAsync("_LineGraphStatsPartial", Model.EVChoice); }
-            @{ await Html.RenderPartialAsync("_LineGraphStatsPartial", Model.EVSalesPrice); }
+            <div class="graphs-row">
+
+                @{ await Html.RenderPartialAsync("_LineGraphStatsPartial", Model.EVAdoption); }
+                @{ await Html.RenderPartialAsync("_LineGraphStatsPartial", Model.EVRange); }
+                @{ await Html.RenderPartialAsync("_LineGraphStatsPartial", Model.EVChoice); }
+                @{ await Html.RenderPartialAsync("_LineGraphStatsPartial", Model.EVSalesPrice); }
         
-            <!--
-            @{ await Html.RenderPartialAsync("_LineGraphStatsPartial", Model.BatteryCost); }
-            @{ await Html.RenderPartialAsync("_LineGraphStatsPartial", Model.EVPerformance); }
-            -->
+                <!--
+                @{ await Html.RenderPartialAsync("_LineGraphStatsPartial", Model.BatteryCost); }
+                @{ await Html.RenderPartialAsync("_LineGraphStatsPartial", Model.EVPerformance); }
+                -->
+            </div>
         </div>
 
-        <div>
+        <div id="market-forecast" class="graphs-section">
             <div class="graphs-title">Market forecast</div>
             
-            @{ await Html.RenderPartialAsync("_LineGraphComputePartial", Model.MarketForecast); }
+            <div class="graphs-row">
+                @{ await Html.RenderPartialAsync("_LineGraphComputePartial", Model.MarketForecast); }
+            </div>
         </div>
 
 
-        <div>
+        <div id="customer-factors" class="graphs-section">
             <div class="graphs-title">Consumer factors</div>
 
-            @{ await Html.RenderPartialAsync("_LineGraphInputPartial", Model.Income); }
-            @{ await Html.RenderPartialAsync("_LineGraphInputPartial", Model.RangeRequirement); }
-            @{ await Html.RenderPartialAsync("_LineGraphInputPartial", Model.Propensity); }
+            <div class="graphs-row">
+                @{ await Html.RenderPartialAsync("_LineGraphInputPartial", Model.Income); }
+                @{ await Html.RenderPartialAsync("_LineGraphInputPartial", Model.RangeRequirement); }
+                @{ await Html.RenderPartialAsync("_LineGraphInputPartial", Model.Propensity); }
+            </div>
         </div>
 
     </div>

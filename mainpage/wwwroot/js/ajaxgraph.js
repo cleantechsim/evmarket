@@ -27,7 +27,10 @@ AjaxGraph.prototype.createChart = function (response) {
                     }
                 }]
             },
-            spanGaps: true
+            spanGaps: true,
+
+            responsive: true,
+            maintainAspectRatio: false
         }
     };
 
