@@ -3,18 +3,22 @@ using System;
 
 using CleanTechSim.MainPage.Helpers;
 
+using CleanTechSim.MainPage.Models.Domain;
+
 using CleanTechSim.MainPage.Models.Helper.ClientGraph;
-using CleanTechSim.MainPage.Models.Helper.GraphData.Prepare;
+using CleanTechSim.MainPage.Models.Helper.GraphData;
 
 using CleanTechSim.MainPage.Models.Helper.Graphs;
+using CleanTechSim.MainPage.Models.Helper.Graphs.Market;
 using CleanTechSim.MainPage.Models.Helper.Graphs.Consumer;
 
 using System.Collections.Generic;
 
 namespace CleanTechSim.MainPage.Controllers
 {
-    public class RESTController
+    public class RESTController : BaseController
     {
+        // For input graphs
         public IDictionary<string, object> GetData(string graphId, decimal median, decimal dispersion, decimal skew)
         {
 
@@ -23,8 +27,6 @@ namespace CleanTechSim.MainPage.Controllers
                 // avoid divide by zero
                 dispersion = 0.00000001m;
             }
-
-            Dictionary<string, object> dictionary = new Dictionary<string, object>();
 
             InputGraph graph;
 
@@ -49,6 +51,34 @@ namespace CleanTechSim.MainPage.Controllers
 
             PreparedDataPoints dataPoints = graph.GenerateDataPoints(median, dispersion, skew, graph.MaxXValue);
 
+            return MakeGraphJSONDictionary(dataPoints, graph.SuggestedMaxY);
+        }
+
+        // For compute market share graph
+        public IDictionary<string, object> ComputeMarketForecast(
+            string graphId,
+            decimal incomeMedian,
+            decimal incomeDispersion,
+            decimal incomeSkew,
+            decimal percentageOfWageForCarCost)
+        {
+
+            ForecastInput input = new ForecastInput(
+                GetAll<Vehicle>(typeof(Vehicle)),
+                new InputGraphSelection(incomeMedian, incomeDispersion, incomeSkew),
+                percentageOfWageForCarCost);
+
+            LineGraph lineGraph = EVMarketForecastGraph.INSTANCE.GetAllSingleLine(input);
+
+            PreparedDataPoints dataPoints = PreparedDataPoints.VerifyAndCompute(lineGraph);
+
+            return MakeGraphJSONDictionary(dataPoints, null);
+        }
+
+        private static IDictionary<string, object> MakeGraphJSONDictionary(PreparedDataPoints dataPoints, decimal? suggestedMaxY)
+        {
+            Dictionary<string, object> dictionary = new Dictionary<string, object>();
+
             dictionary.Add("labels", dataPoints.Labels);
 
             List<IDictionary<string, object>> dataSets = new List<IDictionary<string, object>>();
@@ -66,7 +96,10 @@ namespace CleanTechSim.MainPage.Controllers
 
             dictionary.Add("datasets", dataSets);
 
-            dictionary.Add("suggestedMaxY", graph.SuggestedMaxY);
+            if (suggestedMaxY.HasValue)
+            {
+                dictionary.Add("suggestedMaxY", suggestedMaxY.Value);
+            }
 
             return dictionary;
         }

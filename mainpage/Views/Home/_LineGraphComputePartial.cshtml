@@ -1,0 +1,31 @@
+@using System.Linq
+@using CleanTechSim.MainPage.Models
+@model ComputeGraphModel
+
+@{
+    string divElementId = Model.GraphId;
+    string canvasElementId = Model.GraphId + "Canvas";
+}
+
+<div id="@divElementId" class="graph">
+
+    @if (!string.IsNullOrWhiteSpace(Model.Title)) {
+        <div>
+            <span class="line-graph-title">@Model.Title</span>-<span class="line-graph-subtitle">@Model.SubTitle</span>
+        </div>
+    }
+    
+    <canvas id="@canvasElementId"></canvas>
+
+    <script>
+
+        var graph = new ComputeGraph(
+            '@Model.GraphId',
+            '@Model.AjaxUrl.ToString()',
+            '@canvasElementId');
+
+        window['@Model.DOMWindowVariableName()'] = graph;
+
+    </script>
+
+</div>

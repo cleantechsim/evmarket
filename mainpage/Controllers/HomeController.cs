@@ -35,27 +35,6 @@ namespace CleanTechSim.MainPage.Controllers
                 typeof(Vehicle));
         }
 
-        private LineGraph GetAllMultiLine<INSTANCE, PREPARED>(Type type, InstanceStatsGraph<INSTANCE, PREPARED> graph)
-        {
-            IEnumerable<INSTANCE> elements = GetAll<INSTANCE>(type);
-
-            return graph.GetAllMultiLine(elements);
-        }
-
-        private LineGraph GetAllSingleLine<INSTANCE, PREPARED>(Type type, InstanceStatsGraph<INSTANCE, PREPARED> graph)
-        {
-            IEnumerable<INSTANCE> elements = GetAll<INSTANCE>(type);
-
-            return graph.GetAllSingleLine(elements);
-        }
-
-        private LineGraph GetAllMultiLineKeyed<T, KEY>(Type type, KeyedInstanceStatsGraph<T, KEY> graph)
-        {
-            IEnumerable<T> elements = GetAll<T>(type);
-
-            return graph.GetAllMultiLineKeyed(elements);
-        }
-
         public IActionResult Index()
         {
             IndexModel model = new IndexModel(
@@ -83,6 +62,8 @@ namespace CleanTechSim.MainPage.Controllers
                     GraphIds.EV_SALES_PRICE_ID,
                     GetAllMultiLine(typeof(Vehicle), EVSalesPriceGraph.INSTANCE)),
 
+                MakeComputeGraphModel(GraphIds.MARKET_FORECAST, EVMarketForecastGraph.INSTANCE, "computeMarketForecast"),
+
                 MakeInputGraphModel(
                     GraphIds.INCOME_ID,
                     IncomeGraph.INSTANCE
@@ -100,13 +81,6 @@ namespace CleanTechSim.MainPage.Controllers
             return View(model);
         }
 
-        private static StatsGraphModel VerifyAndComputeStatsModel(string graphId, LineGraph lineGraph)
-        {
-            PreparedDataPoints dataPoints = PreparedDataPoints.VerifyAndCompute(lineGraph);
-
-            return new StatsGraphModel(graphId, lineGraph.Title, lineGraph.SubTitle, dataPoints);
-        }
-
         private static InputGraphModel MakeInputGraphModel(
             string graphId,
             InputGraph graph)
@@ -119,6 +93,15 @@ namespace CleanTechSim.MainPage.Controllers
                 graph.Median,
                 graph.Dispersion,
                 graph.Skew);
+        }
+
+        private static ComputeGraphModel MakeComputeGraphModel(string graphId, StatsGraph graph, string url)
+        {
+            return new ComputeGraphModel(
+                graphId,
+                graph.Title,
+                graph.SubTitle,
+                "/REST/" + url);
         }
 
         public IActionResult Privacy()

@@ -10,6 +10,8 @@ namespace CleanTechSim.MainPage.Helpers
         public const string EV_PERFORMANCE_ID = "evPerformance";
         public const string EV_SALES_PRICE_ID = "evSalesPrice";
 
+        public const string MARKET_FORECAST = "marketForecast";
+
         public const string INCOME_ID = "income";
         public const string RANGE_REQUIREMENT_ID = "rangeNeed";
         public const string PROPENSITY_ID = "propensity";

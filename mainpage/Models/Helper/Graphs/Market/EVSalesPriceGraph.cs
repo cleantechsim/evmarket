@@ -61,8 +61,8 @@ namespace CleanTechSim.MainPage.Models.Helper.Graphs.Market
                             1,
                             MidpointRounding.AwayFromZero)
                         : default(decimal?);
-
             }
+
             return new EVSalesPricePrepared(sortedYears, averageSalesPriceByYear, medianSalesPriceByYear);
         }
 

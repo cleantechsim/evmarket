@@ -9,7 +9,10 @@ namespace CleanTechSim.MainPage.Models.Helper.Graphs
 {
     public abstract class StatsGraph
     {
-        internal DataSeries GetDataSeries<T, PREPARED>(T input, IGraphModelType<T, PREPARED> graphModelType, int lineNo)
+        public abstract string Title { get; }
+        public abstract string SubTitle { get; }
+
+        internal static DataSeries GetDataSeries<T, PREPARED>(T input, IGraphModelType<T, PREPARED> graphModelType, int lineNo)
         {
             PREPARED prepared = graphModelType.Prepare(input);
 
@@ -38,8 +41,13 @@ namespace CleanTechSim.MainPage.Models.Helper.Graphs
         }
     }
 
-    public abstract class BaseInstanceStatsGraph<INSTANCE, PREPARED, MODEL> : StatsGraph
+    internal abstract class BaseInstanceStatsGraph<INPUT, INSTANCE, PREPARED, MODEL> : StatsGraph
+        where MODEL : IGraphModelType<INPUT, PREPARED>
     {
+
+        public override string Title { get { return GraphModelType.Title; } }
+        public override string SubTitle { get { return GraphModelType.SubTitle; } }
+
         internal MODEL GraphModelType { get; }
 
         internal BaseInstanceStatsGraph(MODEL graphModelType)
@@ -47,19 +55,9 @@ namespace CleanTechSim.MainPage.Models.Helper.Graphs
             this.GraphModelType = graphModelType;
         }
 
-    }
-
-    internal class InstanceStatsGraph<INSTANCE, PREPARED>
-        : BaseInstanceStatsGraph<IEnumerable<INSTANCE>, PREPARED, IGraphModelType<IEnumerable<INSTANCE>, PREPARED>>
-    {
-        internal InstanceStatsGraph(IGraphModelType<IEnumerable<INSTANCE>, PREPARED> graphModelType)
-            : base(graphModelType)
+        internal LineGraph GetAllSingleLine(INPUT elements)
         {
-        }
-
-        internal LineGraph GetAllSingleLine(IEnumerable<INSTANCE> elements)
-        {
-            DataSeries dataSeries = GetDataSeries<IEnumerable<INSTANCE>, PREPARED>(elements, GraphModelType, 0);
+            DataSeries dataSeries = GetDataSeries<INPUT, PREPARED>(elements, GraphModelType, 0);
 
             return new LineGraph(
                 GraphModelType.Title,
@@ -68,13 +66,13 @@ namespace CleanTechSim.MainPage.Models.Helper.Graphs
                 new Line[] { new Line(null, Color.Green, dataSeries) });
         }
 
-        internal LineGraph GetAllMultiLine(IEnumerable<INSTANCE> elements)
+        internal LineGraph GetAllMultiLine(INPUT elements)
         {
             Line[] lines = new Line[GraphModelType.NumLines];
 
             for (int lineNo = 0; lineNo < GraphModelType.NumLines; ++lineNo)
             {
-                DataSeries dataSeries = GetDataSeries<IEnumerable<INSTANCE>, PREPARED>(elements, GraphModelType, lineNo);
+                DataSeries dataSeries = GetDataSeries<INPUT, PREPARED>(elements, GraphModelType, lineNo);
 
                 string lineLabel = GraphModelType.GetLineLabel(lineNo);
 
@@ -90,25 +88,36 @@ namespace CleanTechSim.MainPage.Models.Helper.Graphs
 
     }
 
-    internal class KeyedInstanceStatsGraph<T, KEY> : BaseInstanceStatsGraph<T, KEY, IMultiLineGraphModelType<T, KEY>>
+    internal class InstanceStatsGraph<INSTANCE, PREPARED>
+        : BaseInstanceStatsGraph<IEnumerable<INSTANCE>, INSTANCE, PREPARED, IGraphModelType<IEnumerable<INSTANCE>, PREPARED>>
     {
-        internal KeyedInstanceStatsGraph(IMultiLineGraphModelType<T, KEY> graphModelType)
+        internal InstanceStatsGraph(IGraphModelType<IEnumerable<INSTANCE>, PREPARED> graphModelType)
+            : base(graphModelType)
+        {
+        }
+
+    }
+
+    internal class KeyedInstanceStatsGraph<INSTANCE, KEY>
+        : BaseInstanceStatsGraph<IEnumerable<INSTANCE>, INSTANCE, object, IMultiLineGraphModelType<INSTANCE, KEY>>
+    {
+        internal KeyedInstanceStatsGraph(IMultiLineGraphModelType<INSTANCE, KEY> graphModelType)
             : base(graphModelType)
         {
 
         }
 
-        internal LineGraph GetAllMultiLineKeyed(IEnumerable<T> elements)
+        internal LineGraph GetAllMultiLineKeyed(IEnumerable<INSTANCE> elements)
         {
 
-            IDictionary<KEY, List<T>> dictionary = GraphModelType.GetByDistinctKeys(elements);
+            IDictionary<KEY, List<INSTANCE>> dictionary = GraphModelType.GetByDistinctKeys(elements);
 
             // Add datapoints
             List<LineInfo> lineInfos = new List<LineInfo>(dictionary.Keys.Count());
 
             foreach (KEY key in dictionary.Keys)
             {
-                DataSeries dataSeries = GetDataSeries(dictionary[key], GraphModelType, lineInfos.Count());
+                DataSeries dataSeries = GetDataSeries<IEnumerable<INSTANCE>, object>(dictionary[key], GraphModelType, lineInfos.Count());
 
                 LineInfo lineInfo = new LineInfo(GraphModelType.GetLineLabel(key), dataSeries);
 

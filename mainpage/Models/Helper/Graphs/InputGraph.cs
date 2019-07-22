@@ -289,5 +289,20 @@ namespace CleanTechSim.MainPage.Models.Helper.Graphs
 
             return new PreparedDataPoints(labels, new DataSet[] { dataSet });
         }
+
+        public decimal ComputeProbabilityAboveX(InputGraphSelection selection, decimal x)
+        {
+            decimal location = FindDistributionLocation(selection.Median, selection.Dispersion, selection.Skew);
+
+            SkewNormalDistribution distribution = MakeSkewNormalDistribution(
+                location,
+                selection.Median,
+                selection.Dispersion,
+                selection.Skew);
+
+            decimal max = location * 100m;
+
+            return (decimal)(distribution.DistributionFunction((double)max) - distribution.DistributionFunction((double)x));
+        }
     }
 }

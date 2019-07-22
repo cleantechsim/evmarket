@@ -29,20 +29,95 @@
 
     <h2 id="main-barriers">Barriers</h2>
     <div id="barrier-graphs">
-        @{ await Html.RenderPartialAsync("_LineGraphStatsPartial", Model.EVAdoption); }
-        @{ await Html.RenderPartialAsync("_LineGraphStatsPartial", Model.EVRange); }
-        @{ await Html.RenderPartialAsync("_LineGraphStatsPartial", Model.EVChoice); }
-        @{ await Html.RenderPartialAsync("_LineGraphStatsPartial", Model.EVSalesPrice); }
+        <div>
+            <div class="graphs-title">Market statistics</div>
 
-        <!--
-        @{ await Html.RenderPartialAsync("_LineGraphStatsPartial", Model.BatteryCost); }
-        @{ await Html.RenderPartialAsync("_LineGraphStatsPartial", Model.EVPerformance); }
-        -->
+            @{ await Html.RenderPartialAsync("_LineGraphStatsPartial", Model.EVAdoption); }
+            @{ await Html.RenderPartialAsync("_LineGraphStatsPartial", Model.EVRange); }
+            @{ await Html.RenderPartialAsync("_LineGraphStatsPartial", Model.EVChoice); }
+            @{ await Html.RenderPartialAsync("_LineGraphStatsPartial", Model.EVSalesPrice); }
+        
+            <!--
+            @{ await Html.RenderPartialAsync("_LineGraphStatsPartial", Model.BatteryCost); }
+            @{ await Html.RenderPartialAsync("_LineGraphStatsPartial", Model.EVPerformance); }
+            -->
+        </div>
 
-        @{ await Html.RenderPartialAsync("_LineGraphInputPartial", Model.Income); }
-        @{ await Html.RenderPartialAsync("_LineGraphInputPartial", Model.RangeRequirement); }
-        @{ await Html.RenderPartialAsync("_LineGraphInputPartial", Model.Propensity); }
+        <div>
+            <div class="graphs-title">Market forecast</div>
+            
+            @{ await Html.RenderPartialAsync("_LineGraphComputePartial", Model.MarketForecast); }
+        </div>
+
+
+        <div>
+            <div class="graphs-title">Consumer factors</div>
+
+            @{ await Html.RenderPartialAsync("_LineGraphInputPartial", Model.Income); }
+            @{ await Html.RenderPartialAsync("_LineGraphInputPartial", Model.RangeRequirement); }
+            @{ await Html.RenderPartialAsync("_LineGraphInputPartial", Model.Propensity); }
+        </div>
 
     </div>
+
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function (){
+
+            var incomeGraph           = window['@Model.Income.DOMWindowVariableName()'];
+            var rangeRequirementGraph = window['@Model.RangeRequirement.DOMWindowVariableName()'];
+            var propensityGraph       = window['@Model.Propensity.DOMWindowVariableName()'];
+
+
+            var numInited = 0;
+            
+            var checkForInitied = function() {
+                ++ numInited;
+
+                if (numInited == 3) {
+                    updateMarketForecast(
+                        true,
+                        incomeGraph.getGraphSelection(),
+                        rangeRequirementGraph.getGraphSelection(),
+                        propensityGraph.getGraphSelection());
+                }
+            }
+
+            incomeGraph.initGraph(checkForInitied);
+            rangeRequirementGraph.initGraph(checkForInitied);
+            propensityGraph.initGraph(checkForInitied);
+
+            incomeGraph.addGraphUpdateListener(function(selection) {
+                    updateMarketForecast(
+                        false,
+                        selection,
+                        rangeRequirementGraph.getGraphSelection(),
+                        propensityGraph.getGraphSelection());
+
+            })
+        })
+
+        function updateMarketForecast(initial, incomeSelection, rangeRequirementSelection, propensitySelection) {
+
+            var marketForecastGraph = window['@Model.MarketForecast.DOMWindowVariableName()'];
+
+            axios.get('@Model.MarketForecast.AjaxUrl'
+                + '?graphId=Model.MarketForecast.AjaxUrl' + this.graphId
+                + '&incomeMedian=' + incomeSelection.median
+                + '&incomeDispersion=' + incomeSelection.dispersion
+                + '&incomeSkew=' + incomeSelection.skew
+                + '&percentageOfWageForCarCost=75'
+
+            ).then(function (response) {
+
+                if (initial) {
+                    marketForecastGraph.createChart(response.data);                    
+                }
+                else {
+                    marketForecastGraph.updateChartFromResponse(response.data);                                        
+                }
+            })
+        }
+    </script>
 </div>
 

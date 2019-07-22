@@ -20,9 +20,8 @@ namespace CleanTechSim.MainPage.Models
         }
     }
 
-    public class InputGraphModel : BaseGraphModel
+    public class InputGraphModel : AjaxGraphModel
     {
-        public string AjaxUri { get; }
 
         public decimal Median { get; }
         public Range Dispersion { get; }
@@ -32,18 +31,17 @@ namespace CleanTechSim.MainPage.Models
             string graphId,
             string title,
             string subTitle,
-            string ajaxUri,
+            string ajaxUrl,
             decimal median,
             Range dispersion,
             Range skew)
-            : base(graphId, title, subTitle)
+            : base(graphId, title, subTitle, ajaxUrl)
         {
-            if (ajaxUri == null)
+            if (ajaxUrl == null)
             {
                 throw new ArgumentNullException();
             }
 
-            this.AjaxUri = ajaxUri;
             this.Median = median;
             this.Dispersion = dispersion;
             this.Skew = skew;

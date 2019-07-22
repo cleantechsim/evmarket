@@ -31,5 +31,4 @@ namespace CleanTechSim.MainPage.Models.Helper.Graphs.Market
 
         }
     }
-
 }

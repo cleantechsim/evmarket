@@ -51,16 +51,17 @@
 
     <script>
 
-        new InputGraph(
+        var graph = new InputGraph(
             '@Model.GraphId',
-            '@Model.AjaxUri.ToString()',
+            '@Model.AjaxUrl.ToString()',
 
             '@canvasElementId',
             '@medianInputElementId',
             '@dispersionInputElementId',
-            '@skewInputElementId')
+            '@skewInputElementId');
 
-            .initChart();
+        // Store so can retrieve ref from main Index.cshtml
+        window['@Model.DOMWindowVariableName()'] = graph;
 
     </script>
 

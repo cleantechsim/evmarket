@@ -3,6 +3,7 @@
 using System;
 using Microsoft.Azure.Cosmos.Table;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CleanTechSim.MainPage.Helpers.Storage.AzureTableStorage
 {
@@ -45,7 +46,8 @@ namespace CleanTechSim.MainPage.Helpers.Storage.AzureTableStorage
 
             IEnumerable<T> results = table.ExecuteQuery(query, resolver);
 
-            return results;
+            // Trigger to get all at once by ToArray()
+            return results.ToArray();
         }
     }
 }

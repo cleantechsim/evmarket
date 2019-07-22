@@ -12,6 +12,8 @@ namespace CleanTechSim.MainPage.Models
         public StatsGraphModel EVPerformance { get; }
         public StatsGraphModel EVSalesPrice { get; }
 
+        public ComputeGraphModel MarketForecast { get; }
+
         public InputGraphModel Income { get; }
         public InputGraphModel RangeRequirement { get; }
         public InputGraphModel Propensity { get; }
@@ -24,6 +26,8 @@ namespace CleanTechSim.MainPage.Models
             StatsGraphModel evPerformance,
             StatsGraphModel evSalesPrice,
 
+            ComputeGraphModel marketForecast,
+
             InputGraphModel income,
             InputGraphModel rangeRequirement,
             InputGraphModel propensity)
@@ -34,6 +38,8 @@ namespace CleanTechSim.MainPage.Models
             this.EVChoice = evChoice;
             this.EVPerformance = evPerformance;
             this.EVSalesPrice = evSalesPrice;
+
+            this.MarketForecast = marketForecast;
 
             this.Income = income;
             this.RangeRequirement = rangeRequirement;
