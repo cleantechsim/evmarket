@@ -9,6 +9,9 @@ using CleanTechSim.MainPage.Models.Helper.GraphData;
 
 using CleanTechSim.MainPage.Helpers;
 
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("evmarket_test")]
 namespace CleanTechSim.MainPage.Models.Helper.Graphs
 {
     public class InputGraphSelection
@@ -31,7 +34,6 @@ namespace CleanTechSim.MainPage.Models.Helper.Graphs
         public static Range SKEW_DEFAULT = new Range(-30, 0, 30, 0.5m);
 
         private decimal maxGraphXAxisTimesMedian;
-        private decimal minHistogramInterval;
 
         public string Title { get; }
         public string SubTitle { get; }
