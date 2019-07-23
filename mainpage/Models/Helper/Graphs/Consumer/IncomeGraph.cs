@@ -12,7 +12,7 @@ namespace CleanTechSim.MainPage.Models.Helper.Graphs.Consumer
             : base(
                     "Income",
                     "Income distribution",
-                    25000m,
+                    59000m, // US median household income
                     1000m,
                     100000m,
                     10.0m,
