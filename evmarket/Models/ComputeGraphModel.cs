@@ -1,5 +1,5 @@
 
-namespace CleanTechSim.MainPage.Models
+namespace CleanTechSim.EVMarket.Models
 {
     public class ComputeGraphModel : AjaxGraphModel
     {

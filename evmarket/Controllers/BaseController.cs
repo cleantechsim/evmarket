@@ -4,15 +4,15 @@ using System.Collections.Generic;
 
 using Microsoft.AspNetCore.Mvc;
 
-using CleanTechSim.MainPage.Models;
-using CleanTechSim.MainPage.Models.Domain;
+using CleanTechSim.EVMarket.Models;
+using CleanTechSim.EVMarket.Models.Domain;
 
-using CleanTechSim.MainPage.Helpers.Storage.AzureTableStorage;
-using CleanTechSim.MainPage.Models.Helper.ClientGraph;
-using CleanTechSim.MainPage.Models.Helper.GraphData;
-using CleanTechSim.MainPage.Models.Helper.Graphs;
+using CleanTechSim.EVMarket.Helpers.Storage.AzureTableStorage;
+using CleanTechSim.EVMarket.Models.Helper.ClientGraph;
+using CleanTechSim.EVMarket.Models.Helper.GraphData;
+using CleanTechSim.EVMarket.Models.Helper.Graphs;
 
-namespace CleanTechSim.MainPage.Controllers
+namespace CleanTechSim.EVMarket.Controllers
 {
     public abstract class BaseController : Controller
     {

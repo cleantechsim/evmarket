@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using CleanTechSim.MainPage.Models.Helper.GraphData;
-using CleanTechSim.MainPage.Models.Helper.GraphData.Prepare;
+using CleanTechSim.EVMarket.Models.Helper.GraphData;
+using CleanTechSim.EVMarket.Models.Helper.GraphData.Prepare;
 
-namespace CleanTechSim.MainPage.Models.Helper.Graphs
+namespace CleanTechSim.EVMarket.Models.Helper.Graphs
 {
     public abstract class StatsGraph
     {

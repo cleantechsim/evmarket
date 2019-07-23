@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
-namespace CleanTechSim.MainPage.Helpers.Storage.AzureTableStorage
+namespace CleanTechSim.EVMarket.Helpers.Storage.AzureTableStorage
 {
     public abstract class CompositeKeyAttribute : Attribute
     {

@@ -2,9 +2,9 @@
 
 using System.Collections.Generic;
 
-using CleanTechSim.MainPage.Models;
+using CleanTechSim.EVMarket.Models;
 
-namespace CleanTechSim.MainPage.Models.Helper.GraphData.Prepare
+namespace CleanTechSim.EVMarket.Models.Helper.GraphData.Prepare
 {
     public interface IGraphModelType<INPUT, PREPARED>
     {

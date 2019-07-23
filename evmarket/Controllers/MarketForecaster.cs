@@ -3,7 +3,7 @@ using System;
 
 using System.Collections.Generic;
 
-namespace CleanTechSim.MainPage.Helpers.Compute
+namespace CleanTechSim.EVMarket.Helpers.Compute
 {
     public class MarketForecaster
     {

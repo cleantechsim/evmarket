@@ -4,11 +4,11 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
 
-using CleanTechSim.MainPage.Models.Domain;
+using CleanTechSim.EVMarket.Models.Domain;
 
 using Microsoft.Azure.Cosmos.Table;
 
-namespace CleanTechSim.MainPage.Helpers.Storage.AzureTableStorage
+namespace CleanTechSim.EVMarket.Helpers.Storage.AzureTableStorage
 {
     public class ReflectionMapperTest
     {

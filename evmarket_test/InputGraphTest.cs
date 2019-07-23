@@ -2,7 +2,7 @@
 using NUnit.Framework;
 using System.Linq;
 
-namespace CleanTechSim.MainPage.Models.Helper.Graphs
+namespace CleanTechSim.EVMarket.Models.Helper.Graphs
 {
 
 

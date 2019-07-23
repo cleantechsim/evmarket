@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using CleanTechSim.MainPage.Models.Helper.GraphData;
+using CleanTechSim.EVMarket.Models.Helper.GraphData;
 
-namespace CleanTechSim.MainPage.Models.Helper.ClientGraph
+namespace CleanTechSim.EVMarket.Models.Helper.ClientGraph
 {
     public class PreparedDataPoints
     {

@@ -4,15 +4,15 @@ using System.Collections.Generic;
 using System.Linq;
 using Accord.Statistics.Distributions.Univariate;
 
-using CleanTechSim.MainPage.Models.Helper.ClientGraph;
-using CleanTechSim.MainPage.Models.Helper.GraphData;
+using CleanTechSim.EVMarket.Models.Helper.ClientGraph;
+using CleanTechSim.EVMarket.Models.Helper.GraphData;
 
-using CleanTechSim.MainPage.Helpers;
+using CleanTechSim.EVMarket.Helpers;
 
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("evmarket_test")]
-namespace CleanTechSim.MainPage.Models.Helper.Graphs
+namespace CleanTechSim.EVMarket.Models.Helper.Graphs
 {
     public class InputGraphSelection
     {

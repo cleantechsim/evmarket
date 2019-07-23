@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using CleanTechSim.MainPage.Helpers;
+using CleanTechSim.EVMarket.Helpers;
 
-using CleanTechSim.MainPage.Models.Domain;
-using CleanTechSim.MainPage.Models.Helper.GraphData;
-using CleanTechSim.MainPage.Models.Helper.GraphData.Prepare;
+using CleanTechSim.EVMarket.Models.Domain;
+using CleanTechSim.EVMarket.Models.Helper.GraphData;
+using CleanTechSim.EVMarket.Models.Helper.GraphData.Prepare;
 
-namespace CleanTechSim.MainPage.Models.Helper.Graphs.Market
+namespace CleanTechSim.EVMarket.Models.Helper.Graphs.Market
 {
     internal class EVRangePrepared : EVYearsPrepared
     {

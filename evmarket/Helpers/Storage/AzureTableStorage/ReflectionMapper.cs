@@ -6,7 +6,7 @@ using System.Linq;
 
 using Microsoft.Azure.Cosmos.Table;
 
-namespace CleanTechSim.MainPage.Helpers.Storage.AzureTableStorage
+namespace CleanTechSim.EVMarket.Helpers.Storage.AzureTableStorage
 {
     public class ReflectionMapper
     {

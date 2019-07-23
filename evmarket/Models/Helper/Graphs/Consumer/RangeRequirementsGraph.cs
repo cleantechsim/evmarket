@@ -1,5 +1,5 @@
 
-namespace CleanTechSim.MainPage.Models.Helper.Graphs.Consumer
+namespace CleanTechSim.EVMarket.Models.Helper.Graphs.Consumer
 {
     public class RangeRequirementsGraph : InputGraph
     {

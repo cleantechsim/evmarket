@@ -1,7 +1,7 @@
 
 using System.Collections.Generic;
 
-namespace CleanTechSim.MainPage.Models.Helper.GraphData
+namespace CleanTechSim.EVMarket.Models.Helper.GraphData
 {
     public class Color
     {

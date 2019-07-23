@@ -1,8 +1,8 @@
 
 using System;
-using CleanTechSim.MainPage.Models.Helper.GraphData.Prepare;
+using CleanTechSim.EVMarket.Models.Helper.GraphData.Prepare;
 
-namespace CleanTechSim.MainPage.Models
+namespace CleanTechSim.EVMarket.Models
 {
     public class Range
     {

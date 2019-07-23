@@ -2,9 +2,9 @@
 
 using System;
 
-using CleanTechSim.MainPage.Models.Helper.ClientGraph;
+using CleanTechSim.EVMarket.Models.Helper.ClientGraph;
 
-namespace CleanTechSim.MainPage.Models
+namespace CleanTechSim.EVMarket.Models
 {
     public class StatsGraphModel : BaseGraphModel
     {

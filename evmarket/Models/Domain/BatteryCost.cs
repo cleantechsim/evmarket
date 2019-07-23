@@ -1,7 +1,7 @@
 
-using CleanTechSim.MainPage.Helpers.Storage.AzureTableStorage;
+using CleanTechSim.EVMarket.Helpers.Storage.AzureTableStorage;
 
-namespace CleanTechSim.MainPage.Models.Domain
+namespace CleanTechSim.EVMarket.Models.Domain
 {
     public class BatteryCost : BasePersistentModel
     {

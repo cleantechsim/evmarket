@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace CleanTechSim.MainPage.Helpers.Storage
+namespace CleanTechSim.EVMarket.Helpers.Storage
 {
     public interface IDataStorage
     {

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("evmarket_test")]
-namespace CleanTechSim.MainPage.Helpers
+namespace CleanTechSim.EVMarket.Helpers
 {
     internal delegate int Compare(decimal index);
 

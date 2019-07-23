@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using NUnit.Framework;
 
-using CleanTechSim.MainPage.Models.Helper.ClientGraph;
-using CleanTechSim.MainPage.Models.Helper.GraphData;
-using CleanTechSim.MainPage.Helpers;
+using CleanTechSim.EVMarket.Models.Helper.ClientGraph;
+using CleanTechSim.EVMarket.Models.Helper.GraphData;
+using CleanTechSim.EVMarket.Helpers;
 
-namespace CleanTechSim.MainPage.Models
+namespace CleanTechSim.EVMarket.Models
 {
     public class PreparedDataPointsTest
     {

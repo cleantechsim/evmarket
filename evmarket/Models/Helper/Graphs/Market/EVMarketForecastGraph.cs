@@ -3,17 +3,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using CleanTechSim.MainPage.Helpers;
+using CleanTechSim.EVMarket.Helpers;
 
-using CleanTechSim.MainPage.Helpers.Compute;
+using CleanTechSim.EVMarket.Helpers.Compute;
 
-using CleanTechSim.MainPage.Models.Domain;
-using CleanTechSim.MainPage.Models.Helper.GraphData;
-using CleanTechSim.MainPage.Models.Helper.GraphData.Prepare;
+using CleanTechSim.EVMarket.Models.Domain;
+using CleanTechSim.EVMarket.Models.Helper.GraphData;
+using CleanTechSim.EVMarket.Models.Helper.GraphData.Prepare;
 
-using CleanTechSim.MainPage.Models.Helper.Graphs.Consumer;
+using CleanTechSim.EVMarket.Models.Helper.Graphs.Consumer;
 
-namespace CleanTechSim.MainPage.Models.Helper.Graphs.Market
+namespace CleanTechSim.EVMarket.Models.Helper.Graphs.Market
 {
     internal class ForecastInput
     {

@@ -5,7 +5,7 @@ using Microsoft.Azure.Cosmos.Table;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace CleanTechSim.MainPage.Helpers.Storage.AzureTableStorage
+namespace CleanTechSim.EVMarket.Helpers.Storage.AzureTableStorage
 {
 
     public class AzureTableStorage : IDataStorage

@@ -1,7 +1,7 @@
 
 using System.Collections.Generic;
 
-namespace CleanTechSim.MainPage.Models.Domain
+namespace CleanTechSim.EVMarket.Models.Domain
 {
     public abstract class BasePersistentModel
     {

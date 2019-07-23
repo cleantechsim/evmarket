@@ -1,7 +1,7 @@
 
 using System.Runtime.CompilerServices;
 
-namespace CleanTechSim.MainPage.Helpers.Storage.AzureTableStorage
+namespace CleanTechSim.EVMarket.Helpers.Storage.AzureTableStorage
 {
     public class RowKey : CompositeKeyAttribute
     {

@@ -1,11 +1,11 @@
 
 using System.Collections.Generic;
 
-using CleanTechSim.MainPage.Models.Domain;
+using CleanTechSim.EVMarket.Models.Domain;
 
-using CleanTechSim.MainPage.Models.Helper.GraphData.Prepare;
+using CleanTechSim.EVMarket.Models.Helper.GraphData.Prepare;
 
-namespace CleanTechSim.MainPage.Models.Helper.Graphs.Market
+namespace CleanTechSim.EVMarket.Models.Helper.Graphs.Market
 {
 
     internal class EVYearsPrepared

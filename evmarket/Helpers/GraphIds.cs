@@ -1,5 +1,5 @@
 
-namespace CleanTechSim.MainPage.Helpers
+namespace CleanTechSim.EVMarket.Helpers
 {
     public class GraphIds
     {

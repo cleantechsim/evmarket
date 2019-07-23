@@ -1,7 +1,7 @@
 
 using System;
 
-namespace CleanTechSim.MainPage.Models
+namespace CleanTechSim.EVMarket.Models
 {
     public abstract class BaseGraphModel
     {

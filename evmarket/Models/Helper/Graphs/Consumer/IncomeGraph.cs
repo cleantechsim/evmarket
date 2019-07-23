@@ -1,7 +1,7 @@
 
-using CleanTechSim.MainPage.Models.Helper.Graphs;
+using CleanTechSim.EVMarket.Models.Helper.Graphs;
 
-namespace CleanTechSim.MainPage.Models.Helper.Graphs.Consumer
+namespace CleanTechSim.EVMarket.Models.Helper.Graphs.Consumer
 {
 
     public class IncomeGraph : InputGraph
