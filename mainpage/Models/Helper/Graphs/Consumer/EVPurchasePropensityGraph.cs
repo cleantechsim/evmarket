@@ -1,7 +1,7 @@
 
 using CleanTechSim.MainPage.Models.Helper.Graphs;
 
-namespace CleanTechSim.MainPage.Models.Helper.Graphs
+namespace CleanTechSim.MainPage.Models.Helper.Graphs.Consumer
 {
     public class EVPurchasePropensityGraph : InputGraph
     {
