@@ -66,23 +66,30 @@ namespace CleanTechSim.EVMarket.Controllers
                     GraphIds.EV_SALES_PRICE_ID,
                     GetAllMultiLine(typeof(Vehicle), EVSalesPriceGraph.INSTANCE)),
 
-                MakeComputeGraphModel(GraphIds.MARKET_FORECAST, EVMarketForecastGraph.INSTANCE, proxiedUri, "computeMarketForecast"),
+                    null,
+                    null,
+                    null,
+                    null
 
-                MakeInputGraphModel(
-                    GraphIds.INCOME_ID,
-                    IncomeGraph.INSTANCE,
-                    proxiedUri
-                ),
-                MakeInputGraphModel(
-                    GraphIds.RANGE_REQUIREMENT_ID,
-                    RangeRequirementsGraph.INSTANCE,
-                    proxiedUri
-                ),
-                MakeInputGraphModel(
-                    GraphIds.PROPENSITY_ID,
-                    EVPurchasePropensityGraph.INSTANCE,
-                    proxiedUri
-                )
+            /*
+                            MakeComputeGraphModel(GraphIds.MARKET_FORECAST, EVMarketForecastGraph.INSTANCE, proxiedUri, "computeMarketForecast"),
+
+                            MakeInputGraphModel(
+                                GraphIds.INCOME_ID,
+                                IncomeGraph.INSTANCE,
+                                proxiedUri
+                            ),
+                            MakeInputGraphModel(
+                                GraphIds.RANGE_REQUIREMENT_ID,
+                                RangeRequirementsGraph.INSTANCE,
+                                proxiedUri
+                            ),
+                            MakeInputGraphModel(
+                                GraphIds.PROPENSITY_ID,
+                                EVPurchasePropensityGraph.INSTANCE,
+                                proxiedUri
+                            )
+            */
             );
 
             return View(model);
