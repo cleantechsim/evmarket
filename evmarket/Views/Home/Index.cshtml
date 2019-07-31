@@ -7,11 +7,11 @@
 }
 
 <div class="main-container">
-    <h1 id="main-title">Cleantech market simulator</h1>
+    <h1 id="main-title">EV market overview</h1>
 
     <p id="main-text">
 
-        The purpose of this page is to visualize in a simple way the trends in the clean tech market and how far one is from
+        The purpose of this page is to visualize in a simple way the trends in the Electric Vehicle market and how far one is from
         reaching critical mass.<br/>
 
         <!--
@@ -32,17 +32,19 @@
             <div class="graphs-title">Market statistics</div>
 
             <div class="graphs-row">
-
                 @{ await Html.RenderPartialAsync("_LineGraphStatsPartial", Model.EVAdoption); }
                 @{ await Html.RenderPartialAsync("_LineGraphStatsPartial", Model.EVRange); }
+            </div>
+
+            <div class="graphs-row">
                 @{ await Html.RenderPartialAsync("_LineGraphStatsPartial", Model.EVChoice); }
                 @{ await Html.RenderPartialAsync("_LineGraphStatsPartial", Model.EVSalesPrice); }
+            </div>
         
-                <!--
+            @*
                 @{ await Html.RenderPartialAsync("_LineGraphStatsPartial", Model.BatteryCost); }
                 @{ await Html.RenderPartialAsync("_LineGraphStatsPartial", Model.EVPerformance); }
-                -->
-            </div>
+            *@
         </div>
 
 @*
