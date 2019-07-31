@@ -108,7 +108,7 @@
             var marketForecastGraph = window['@Model.MarketForecast.DOMWindowVariableName()'];
 
             axios.get('@Model.MarketForecast.AjaxUrl'
-                + '?graphId=Model.MarketForecast.AjaxUrl' + this.graphId
+                + '?graphId=@Model.MarketForecast.GraphId'
                 + '&incomeMedian=' + incomeSelection.median
                 + '&incomeDispersion=' + incomeSelection.dispersion
                 + '&incomeSkew=' + incomeSelection.skew
