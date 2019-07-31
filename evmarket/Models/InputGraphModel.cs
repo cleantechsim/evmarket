@@ -31,11 +31,12 @@ namespace CleanTechSim.EVMarket.Models
             string graphId,
             string title,
             string subTitle,
+            string proxiedUri,
             string ajaxUrl,
             decimal median,
             Range dispersion,
             Range skew)
-            : base(graphId, title, subTitle, ajaxUrl)
+            : base(graphId, title, subTitle, proxiedUri, ajaxUrl)
         {
             if (ajaxUrl == null)
             {

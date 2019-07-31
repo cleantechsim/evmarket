@@ -18,7 +18,7 @@
     </environment>
     <link rel="stylesheet" href="~/css/site.css" />
 -->
-    <link rel="stylesheet" href="~/css/mainpage.css" />
+    <link rel="stylesheet" href="@ViewData["files_prefix"]/css/mainpage.css" />
 
 
 <!--
@@ -28,9 +28,9 @@
     
     <script type="text/javascript" src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
-    <script type="text/javascript" src="~/js/ajaxgraph.js"></script>
-    <script type="text/javascript" src="~/js/computegraph.js"></script>
-    <script type="text/javascript" src="~/js/inputgraph.js"></script>
+    <script type="text/javascript" src="@ViewData["files_prefix"]/js/ajaxgraph.js"></script>
+    <script type="text/javascript" src="@ViewData["files_prefix"]/js/computegraph.js"></script>
+    <script type="text/javascript" src="@ViewData["files_prefix"]/js/inputgraph.js"></script>
 
 </head>
 <body>
@@ -93,7 +93,7 @@
     </environment>
 -->
 
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="@ViewData["files_prefix"]/js/site.js" asp-append-version="true"></script>
 
     @RenderSection("Scripts", required: false)
 

@@ -16,12 +16,10 @@ using CleanTechSim.EVMarket.Models.Helper.Graphs.Consumer;
 using CleanTechSim.EVMarket.Models.Helper.Graphs.Market;
 using CleanTechSim.EVMarket.Helpers;
 
-
 namespace CleanTechSim.EVMarket.Controllers
 {
     public class HomeController : BaseController
     {
-
         private readonly IDataStorage storage;
 
         public HomeController()
@@ -33,10 +31,16 @@ namespace CleanTechSim.EVMarket.Controllers
                 typeof(MonthlyCountryEVCarSales),
                 typeof(BatteryCost),
                 typeof(Vehicle));
+
         }
 
         public IActionResult Index()
         {
+            IEnumerable<string> proxiedUriHeaderValue = Request.Headers["X-Proxied-URI"];
+            string proxiedUri = proxiedUriHeaderValue.Any() ? proxiedUriHeaderValue.ElementAt(0) : "";
+
+            ViewData["files_prefix"] = proxiedUri;
+
             IndexModel model = new IndexModel(
                 VerifyAndComputeStatsModel(
                     GraphIds.EV_ADOPTION_ID,
@@ -62,19 +66,22 @@ namespace CleanTechSim.EVMarket.Controllers
                     GraphIds.EV_SALES_PRICE_ID,
                     GetAllMultiLine(typeof(Vehicle), EVSalesPriceGraph.INSTANCE)),
 
-                MakeComputeGraphModel(GraphIds.MARKET_FORECAST, EVMarketForecastGraph.INSTANCE, "computeMarketForecast"),
+                MakeComputeGraphModel(GraphIds.MARKET_FORECAST, EVMarketForecastGraph.INSTANCE, proxiedUri, "computeMarketForecast"),
 
                 MakeInputGraphModel(
                     GraphIds.INCOME_ID,
-                    IncomeGraph.INSTANCE
+                    IncomeGraph.INSTANCE,
+                    proxiedUri
                 ),
                 MakeInputGraphModel(
                     GraphIds.RANGE_REQUIREMENT_ID,
-                    RangeRequirementsGraph.INSTANCE
+                    RangeRequirementsGraph.INSTANCE,
+                    proxiedUri
                 ),
                 MakeInputGraphModel(
                     GraphIds.PROPENSITY_ID,
-                    EVPurchasePropensityGraph.INSTANCE
+                    EVPurchasePropensityGraph.INSTANCE,
+                    proxiedUri
                 )
             );
 
@@ -83,24 +90,27 @@ namespace CleanTechSim.EVMarket.Controllers
 
         private static InputGraphModel MakeInputGraphModel(
             string graphId,
-            InputGraph graph)
+            InputGraph graph,
+            string proxiedUri)
         {
             return new InputGraphModel(
                 graphId,
                 graph.Title,
                 graph.SubTitle,
+                proxiedUri,
                 "/REST/getData",
                 graph.Median,
                 graph.Dispersion,
                 graph.Skew);
         }
 
-        private static ComputeGraphModel MakeComputeGraphModel(string graphId, StatsGraph graph, string url)
+        private static ComputeGraphModel MakeComputeGraphModel(string graphId, StatsGraph graph, string proxiedUri, string url)
         {
             return new ComputeGraphModel(
                 graphId,
                 graph.Title,
                 graph.SubTitle,
+                proxiedUri,
                 "/REST/" + url);
         }
 

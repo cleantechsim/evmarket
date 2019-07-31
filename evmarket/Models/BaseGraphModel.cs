@@ -33,10 +33,10 @@ namespace CleanTechSim.EVMarket.Models
 
         public string AjaxUrl { get; }
 
-        internal AjaxGraphModel(string graphId, string title, string subTitle, string ajaxUrl)
+        internal AjaxGraphModel(string graphId, string title, string subTitle, string proxiedUri, string ajaxUrl)
             : base(graphId, title, subTitle)
         {
-            this.AjaxUrl = ajaxUrl;
+            this.AjaxUrl = proxiedUri + ajaxUrl;
         }
     }
 }
