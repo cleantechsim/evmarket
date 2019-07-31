@@ -18,6 +18,7 @@ using CleanTechSim.EVMarket.Helpers;
 
 namespace CleanTechSim.EVMarket.Controllers
 {
+    [DisableCache]
     public class HomeController : BaseController
     {
         private readonly IDataStorage storage;

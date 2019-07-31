@@ -16,6 +16,7 @@ using System.Collections.Generic;
 
 namespace CleanTechSim.EVMarket.Controllers
 {
+    [DisableCache]
     public class RESTController : BaseController
     {
         // For input graphs
